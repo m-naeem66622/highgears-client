@@ -26,17 +26,21 @@ import { BASE_URL, PRODUCTS_URL } from "../constants";
 
 const ProductDetail = () => {
   const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.cartItems);
   const { _id } = useParams();
+
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedImage, setSelectedImage] = useState(0);
   const [activeTab, setActiveTab] = useState("description");
   const [quantity, setQuantity] = useState(1);
-  const [size, setSize] = useState("");
-  const [color, setColor] = useState("");
-
-  const cartItems = useSelector((state) => state.cart.cartItems);
+  const [size, setSize] = useState(
+    cartItems.find((item) => item._id === _id)?.size || ""
+  );
+  const [color, setColor] = useState(
+    cartItems.find((item) => item._id === _id)?.color || ""
+  );
 
   const handleImageSelect = (index) => {
     setSelectedImage(index);
@@ -63,6 +67,18 @@ const ProductDetail = () => {
       notify("error", "Error while fetching product");
     }
     setLoading(false);
+  };
+
+  const handleAddToCart = () => {
+    if (!size) {
+      notify("error", "Please select a size");
+      return;
+    }
+    if (!color) {
+      notify("error", "Please select a color");
+      return;
+    }
+    dispatch(addToCart({ ...data, quantity, size, color }));
   };
 
   useEffect(() => {
@@ -137,13 +153,13 @@ const ProductDetail = () => {
               <div className="mb-2 lg:text-lg flex items-center">
                 <span className="text-black text-2xl font-bold mr-1">$</span>
                 <span className="text-black font-bold text-2xl mr-2">
-                  {data.selling_price}
+                  {Number(data.selling_price).toFixed(2)}
                 </span>
                 <span className="text-red-500 line-through text-lg mr-1">
                   $
                 </span>
                 <span className="text-red-500 line-through text-lg">
-                  {data.original_price}
+                  {Number(data.original_price).toFixed(2)}
                 </span>
                 <Chip color="success" size="md" className="ml-4">
                   {100 -
@@ -166,7 +182,11 @@ const ProductDetail = () => {
             </div>
 
             <div className="">
-              <RadioGroup label="Select Size" orientation="horizontal">
+              <RadioGroup
+                label="Select Size"
+                value={size}
+                orientation="horizontal"
+              >
                 {data.available_sizes.map((size, index) => (
                   <CustomRadio
                     key={index}
@@ -189,7 +209,8 @@ const ProductDetail = () => {
                 selectionMode="single"
                 className="w-60"
                 labelPlacement="outside"
-                onSelectionChange={setColor}
+                onChange={(e) => setColor(e.target.value)}
+                selectedKeys={[color]}
                 radius="none"
               >
                 {data.available_colors.map((color) => (
@@ -241,7 +262,7 @@ const ProductDetail = () => {
                 <CustomButton
                   color="dark"
                   radius="none"
-                  onClick={() => dispatch(addToCart({ ...data, quantity }))} // Dispatch the action
+                  onClick={handleAddToCart}
                 >
                   {cartItems.some((item) => item._id === data._id)
                     ? "Update Cart"

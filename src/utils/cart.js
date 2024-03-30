@@ -8,7 +8,7 @@ export const updateCart = (state) => {
   // Calculate the items price in whole number to avoid issues with
   // floating point number calculations
   const itemsPrice = state.cartItems.reduce(
-    (acc, item) => acc + (item.selling_price * 100 * item.quantity) / 100,
+    (acc, item) => acc + (item.original_price * 100 * item.quantity) / 100,
     0
   );
   state.itemsPrice = addDecimals(itemsPrice);
@@ -32,8 +32,6 @@ export const updateCart = (state) => {
   const totalPrice = itemsPrice + shippingPrice - discountedPrice;
   // Calculate the total price
   state.totalPrice = addDecimals(totalPrice);
-
-  console.log("state:", current(state));
 
   // Save the cart to localStorage
   localStorage.setItem("cart", JSON.stringify(state));

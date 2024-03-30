@@ -23,3 +23,13 @@ export const slugify = (text) => {
     .replace(/^-+/, "") // Trim - from start of text
     .replace(/-+$/, ""); // Trim - from end of text
 };
+
+export function formatPhoneNumber(phoneNumber) {
+  let formattedNumber = phoneNumber.format;
+  formattedNumber = formattedNumber.replace("..", phoneNumber.dialCode);
+  let numberParts = phoneNumber.number.match(/.{1,3}/g); // split number into groups of 3
+  numberParts.forEach((part) => {
+    formattedNumber = formattedNumber.replace("...", part);
+  });
+  return formattedNumber;
+}

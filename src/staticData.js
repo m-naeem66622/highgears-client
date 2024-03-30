@@ -5,6 +5,14 @@ export const genders = [
   { value: "OTHER", label: "Other" },
 ];
 
+export const orderStatus = [
+  { key: "PENDING", label: "PENDING" },
+  { key: "PROCESSING", label: "PROCESSING" },
+  { key: "SHIPPED", label: "SHIPPED" },
+  { key: "COMPLETED", label: "COMPLETED" },
+  { key: "CANCELLED", label: "CANCELLED" },
+];
+
 export const productColumns = [
   { name: "IMAGES", uid: "images", sortable: false },
   { name: "NAME", uid: "name", sortable: true },
@@ -34,6 +42,18 @@ export const cartColumns = [
   { name: "SHIPPING PRICE", uid: "shipping_price" },
   { name: "PRICE", uid: "selling_price" },
   { name: "QUANTITY", uid: "quantity" },
+  { name: "ACTIONS", uid: "actions" },
+];
+
+export const orderColumns = [
+  { name: "ORDER ID", uid: "_id", sortable: true },
+  { name: "CUSTOMER", uid: "user.name", sortable: true },
+  { name: "PHONE NUMBER", uid: "user.phoneNumber", sortable: true },
+  { name: "AMOUNT", uid: "totalPrice", sortable: true },
+  { name: "PLACED AT", uid: "placedAt", sortable: true },
+  { name: "ORDER STATUS", uid: "orderStatus", sortable: true },
+  { name: "PAYMENT METHOD", uid: "paymentMethod", sortable: true },
+  { name: "PAYMENT STATUS", uid: "paymentStatus", sortable: true },
   { name: "ACTIONS", uid: "actions" },
 ];
 

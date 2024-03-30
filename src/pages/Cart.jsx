@@ -14,10 +14,13 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { cartColumns } from "../staticData";
 import { CustomButton } from "../components/CustomButton";
-import { Link } from "react-router-dom";
-import { clearCartItems, removeFromCart } from "../slices/cartSlice";
+import { Link, useNavigate } from "react-router-dom";
+import { clearCartItems, removeFromCart, setCart } from "../slices/cartSlice";
+import axios from "axios";
+import { ORDERS_URL } from "../constants";
 
 const Cart = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.auth.userInfo);
   const cart = useSelector((state) => state.cart);
@@ -62,6 +65,35 @@ const Cart = () => {
         return cellValue;
     }
   }, []);
+
+  const handleCheckout = async () => {
+    console.log("Cart Items: ", cart.cartItems);
+    console.log("User Info: ", userInfo);
+    if (!cart.cartItems.length) return;
+    try {
+      let formattedData = {
+        products: cart.cartItems.map((item) => ({
+          product: item._id,
+          quantity: item.quantity,
+          size: item.size,
+          color: item.color,
+        })),
+      const response = await axios.post(
+        `${ORDERS_URL}/checkout`,
+        formattedData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
+      
+      dispatch(setCart({ ...response.data.data, showCheckout: true }));
+      navigate("/checkout");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="mb-8">
@@ -121,11 +153,16 @@ const Cart = () => {
                   <strong> Total Bill:</strong>
                   <span>
                     <strong>$</strong>{" "}
-                    <strong className="fotn-mono">{cart.totalPrice}</strong>
+                    <strong className="font-mono">{cart.totalPrice}</strong>
                   </span>
                 </Text>
                 {userInfo ? (
-                  <CustomButton color="dark" radius="none" size="lg">
+                  <CustomButton
+                    onClick={handleCheckout}
+                    color="dark"
+                    radius="none"
+                    size="lg"
+                  >
                     Checkout
                   </CustomButton>
                 ) : (

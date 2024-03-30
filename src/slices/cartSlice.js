@@ -9,9 +9,20 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
+    setCart: (state, action) => updateCart({ ...state, ...action.payload }),
     addToCart: (state, action) => {
       // eslint-disable-next-line no-unused-vars
-      const { avg_rating, in_stock, currency, brand, ...item } = action.payload;
+      const {
+        avg_rating,
+        in_stock,
+        currency,
+        brand,
+        description,
+        available_colors,
+        available_sizes,
+        reviews_count,
+        ...item
+      } = action.payload;
 
       const existItemIndex = state.cartItems.findIndex(
         (x) => x._id === item._id
@@ -47,6 +58,7 @@ const cartSlice = createSlice({
 });
 
 export const {
+  setCart,
   addToCart,
   removeFromCart,
   saveShippingAddress,
