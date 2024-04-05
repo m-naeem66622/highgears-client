@@ -7,13 +7,14 @@ import { Spinner } from "@nextui-org/react";
 import axios from "axios";
 import { PRODUCTS_URL } from "../constants";
 import { useDispatch, useSelector } from "react-redux";
-import InfiniteScroll from "react-infinite-scroll-component";
 import { addProducts, setProducts } from "../slices/productsSlice";
 import { notify } from "../utils/notify";
+import { CustomButton } from "../components/CustomButton";
 
 const ProductsList = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
+  const [rolling, setRolling] = useState(false);
   const [error, setError] = useState(null);
   const products = useSelector((state) => state.products);
 
@@ -50,6 +51,7 @@ const ProductsList = () => {
       });
     }
 
+    setRolling(false);
     setLoading(false);
   };
 
@@ -88,25 +90,31 @@ const ProductsList = () => {
         </Text>
       </div>
 
-      <div className="">
-        <InfiniteScroll
-          className="mt-8 flex flex-wrap gap-x-3 gap-y-6 justify-center"
-          dataLength={products.data.length} //This is important field to render the next data
-          next={fetchProducts}
-          hasMore={
-            products.pagination.currentPage < products.pagination.totalPages
-          }
-          loader={<Spinner label="Loading..." size="lg" />}
-          endMessage={
-            <p style={{ textAlign: "center" }}>
-              <b>Yay! You have seen it all</b>
-            </p>
-          }
-        >
-          {products.data.map((product) => (
-            <ProductCard key={product._id} data={product} />
-          ))}
-        </InfiniteScroll>
+      <div className="mt-8 flex flex-wrap gap-x-3 gap-y-6 justify-center">
+        {products.data.map((product) => (
+          <ProductCard key={product._id} data={product} />
+        ))}
+      </div>
+      <div className="w-full flex justify-center">
+        {products.pagination.currentPage < products.pagination.totalPages ? (
+          <CustomButton
+            onClick={() => {
+              setRolling(true);
+              fetchProducts();
+            }}
+            className="my-8 mx-auto"
+            color="dark"
+            radius="none"
+            isLoading={rolling}
+            disabled={rolling}
+          >
+            Load More
+          </CustomButton>
+        ) : (
+          <Text as="p" className="">
+            Yaay! You have seen it all
+          </Text>
+        )}
       </div>
     </div>
   );

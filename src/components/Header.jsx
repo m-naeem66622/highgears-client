@@ -33,7 +33,7 @@ const Header = () => {
       { name: "Sale", path: "/collections/all-women-deals" },
       { name: "Eastern Wear", path: "/collections/women-eastern-wear" },
       { name: "Western Wear", path: "/collections/women-western-wear" },
-      { name: "Active Wear", path: "/collections/women-acive-wear" },
+      { name: "Active Wear", path: "/collections/women-active-wear" },
       { name: "Footwear", path: "/collections/women-footwear" },
       { name: "Sports Wear", path: "/collections/women-sports-wear" },
       { name: "Accessories", path: "/collections/women-accessories" },
@@ -42,8 +42,8 @@ const Header = () => {
     men: [
       { name: "Sale", path: "/collections/all-men-deals" },
       { name: "Eastern Wear", path: "/collections/men-eastern-wear" },
-      { name: "Western Wear", path: "/collections/men-wetern-wear" },
-      { name: "Active Wear", path: "/collections/men-acive-wear" },
+      { name: "Western Wear", path: "/collections/men-western-wear" },
+      { name: "Active Wear", path: "/collections/men-active-wear" },
       { name: "Footwear", path: "/collections/men-footwear" },
       { name: "Sports Wear", path: "/collections/men-sports-wear" },
       { name: "Accessories", path: "/collections/men-accessories" },
@@ -141,19 +141,31 @@ const Header = () => {
                 </Badge>
               </div>
             </DropdownTrigger>
-            <DropdownMenu>
-              <DropdownItem className="rounded-none">
+            <DropdownMenu aria-label="Cart Summary">
+              <DropdownItem
+                key={1}
+                textValue={`${cart.cartItems.length || 0} Item(s)`}
+                className="rounded-none"
+              >
                 <span className="font-bold">
                   {cart.cartItems.length} Item(s)
                 </span>
               </DropdownItem>
-              <DropdownItem className="rounded-none">
+              <DropdownItem
+                key={2}
+                textValue={`Subtotal: ₨. ${cart.itemsPrice || 0}`}
+                className="rounded-none"
+              >
                 <span className=" text-primary font-bold">
-                  Subtotal: ₨. {cart.itemsPrice}
+                  Subtotal: ₨. {cart.itemsPrice || 0}
                 </span>
               </DropdownItem>
 
-              <DropdownItem className="rounded-none">
+              <DropdownItem
+                key={3}
+                textValue="View Cart"
+                className="rounded-none"
+              >
                 <CustomButton
                   to="/cart"
                   as={Link}

@@ -63,6 +63,7 @@ const CollectionList = () => {
       dispatch(addCollection(response.data.data));
       setCollection(response.data.data);
       setProducts(response.data.data.products);
+      setError(null);
     } catch (error) {
       console.log("fetchCollection -> error", error);
 
@@ -76,7 +77,7 @@ const CollectionList = () => {
         };
       }
       setError(errorObj);
-      notify("error", "Error while fetching product", {
+      notify("error", "Error while fetching collection", {
         toastId: error.code,
       });
     }
@@ -89,10 +90,11 @@ const CollectionList = () => {
       setCollection(foundCollection);
       setProducts(foundCollection.products);
       setLoading(false);
+      setError(null);
     } else {
       fetchCollection();
     }
-  }, []);
+  }, [slug]);
 
   if (loading) {
     return (
