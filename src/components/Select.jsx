@@ -34,8 +34,16 @@ const Select = ({
           isInvalid={error ? true : false}
           errorMessage={error}
           selectionMode={selectionMode}
-          onChange={(e) => field.onChange(e.target.value.split(","))}
-          selectedKeys={field.value}
+          onChange={(e) => {
+            if (selectionMode !== "single") {
+              field.onChange(e.target.value.split(","));
+            } else {
+              field.onChange(e.target.value);
+            }
+          }}
+          selectedKeys={
+            selectionMode === "single" ? [field.value] : field.value
+          }
           isMultiline={selectionMode === "multiple" ? true : false}
           variant="bordered"
           radius="none"

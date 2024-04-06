@@ -35,7 +35,7 @@ const Input = (props) => {
           {...field}
           className={`w-full ${className}`}
           classNames={{ input: "placeholder:text-[#ACACAA]", ...classNames }}
-          type={isVisible ? type : type === "password" ? "password" : type}
+          type={isVisible ? "text" : type === "password" ? "password" : type}
           isRequired={isRequired}
           label={label}
           defaultValue={defaultValue}

@@ -48,7 +48,7 @@ const CollectionsList = () => {
     new Set(INITIAL_VISIBLE_COLUMNS)
   );
   const [sortDescriptor, setSortDescriptor] = React.useState({
-    column: "age",
+    column: "name",
     direction: "ascending",
   });
   const [collections, setCollections] = React.useState([]);

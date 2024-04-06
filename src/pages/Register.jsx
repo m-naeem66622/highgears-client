@@ -9,6 +9,7 @@ import { notify } from "../utils/notify";
 import { toTitleCase } from "../utils/strings";
 import { setCredentials } from "../slices/authSlice";
 import { AUTH_URL } from "../constants";
+import Input from "../components/Input";
 import Select from "../components/Select";
 import { genders } from "../staticData";
 import { Country, State, City } from "country-state-city";
