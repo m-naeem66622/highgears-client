@@ -41,6 +41,7 @@ const AutoComplete = (props) => {
           size="lg"
           labelPlacement="outside"
           placeholder={placeholder}
+          selectedKey={field.value}
           disabledKeys={[""]}
           onSelectionChange={(value) => setValue(name, value)}
           defaultItems={defaultItems}

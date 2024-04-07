@@ -8,8 +8,8 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-  DropdownSection,
   Badge,
+  Avatar,
 } from "@nextui-org/react";
 import { CustomButton } from "./CustomButton";
 import { logout } from "../slices/authSlice";
@@ -127,10 +127,10 @@ const Header = () => {
           <span className="text-white">ONLINE STORE</span>
         </Link>
 
-        <div className="flex items-center gap-x-3">
+        <div className="flex items-center justify-center gap-x-3">
           <Dropdown radius="none">
             <DropdownTrigger>
-              <div className="text-black cursor-pointer relative">
+              <div className="flex text-black cursor-pointer relative">
                 <Badge
                   content={cart.cartItems.length}
                   isInvisible={cart.cartItems.length ? false : true}
@@ -178,7 +178,96 @@ const Header = () => {
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
-
+          <Dropdown radius="none" placement="bottom-end">
+            <DropdownTrigger>
+              <Avatar
+                size="sm"
+                isBordered
+                as="button"
+                className="transition-transform"
+                src="https://gravatar.com/avatar?s=200&d=mp"
+              />
+            </DropdownTrigger>
+            {userInfo ? (
+              <DropdownMenu aria-label="Profile Actions" variant="flat">
+                <DropdownItem
+                  key="userInfo"
+                  textValue={`Signed in as ${userInfo?.email}`}
+                  className="h-14 gap-2 rounded-none"
+                >
+                  <p className="font-semibold">Signed in as</p>
+                  <p className="font-semibold">{userInfo?.email}</p>
+                </DropdownItem>
+                <DropdownItem
+                  key="profile"
+                  textValue="Profile"
+                  className="rounded-none text-neutral-600"
+                  to="/user/account?tab=profile"
+                  as={Link}
+                >
+                  Profile
+                </DropdownItem>
+                <DropdownItem
+                  key="orders"
+                  textValue="My Orders"
+                  className="rounded-none text-neutral-600"
+                  to="/user/account?tab=orders"
+                  as={Link}
+                >
+                  My Orders
+                </DropdownItem>
+                <DropdownItem
+                  key="reviews"
+                  textValue="My Reviews"
+                  className="rounded-none text-neutral-600"
+                  to="/user/account?tab=reviews"
+                  as={Link}
+                >
+                  My Reviews
+                </DropdownItem>
+                <DropdownItem
+                  key="logout"
+                  color="danger"
+                  textValue="Log Out"
+                  className="rounded-none"
+                  onClick={() => {
+                    dispatch(logout());
+                    navigate("/");
+                  }}
+                >
+                  Log Out
+                </DropdownItem>
+              </DropdownMenu>
+            ) : (
+              <DropdownMenu aria-label="Profile Actions" variant="flat">
+                <DropdownItem
+                  key="profile"
+                  textValue="New Here"
+                  className="h-14 gap-2 rounded-none"
+                >
+                  <p className="font-semibold">New here?</p>
+                </DropdownItem>
+                <DropdownItem
+                  key="login"
+                  textValue="Login"
+                  className="rounded-none text-neutral-600"
+                  as={Link}
+                  to="/login"
+                >
+                  Login
+                </DropdownItem>
+                <DropdownItem
+                  key="register"
+                  textValue="Register"
+                  className="rounded-none text-neutral-600"
+                  as={Link}
+                  to="/register"
+                >
+                  Register
+                </DropdownItem>
+              </DropdownMenu>
+            )}
+          </Dropdown>
           <div className="hidden sm:block max-w-full sm:max-w-[14rem]"></div>
         </div>
       </div>
@@ -257,16 +346,96 @@ const Header = () => {
         </Link>
 
         <div className="flex items-center gap-x-3">
-          <CustomButton
-            color="dark"
-            radius="none"
-            onClick={() => {
-              dispatch(logout());
-              navigate("/login");
-            }}
-          >
-            {userInfo?.isAdmin ? "Logout" : "Login"}
-          </CustomButton>
+          <Dropdown radius="none" placement="bottom-end">
+            <DropdownTrigger>
+              <Avatar
+                size="sm"
+                isBordered
+                as="button"
+                className="transition-transform"
+                src="https://gravatar.com/avatar?s=200&d=mp"
+              />
+            </DropdownTrigger>
+            {userInfo ? (
+              <DropdownMenu aria-label="Profile Actions" variant="flat">
+                <DropdownItem
+                  key="userInfo"
+                  textValue={`Signed in as ${userInfo?.email}`}
+                  className="h-14 gap-2 rounded-none"
+                >
+                  <p className="font-semibold">Signed in as</p>
+                  <p className="font-semibold">{userInfo?.email}</p>
+                </DropdownItem>
+                <DropdownItem
+                  key="profile"
+                  textValue="Profile"
+                  className="rounded-none text-neutral-600"
+                  to="/admin/account?tab=profile"
+                  as={Link}
+                >
+                  Profile
+                </DropdownItem>
+                <DropdownItem
+                  key="orders"
+                  textValue="My Orders"
+                  className="rounded-none text-neutral-600"
+                  to="/admin/account?tab=orders"
+                  as={Link}
+                >
+                  My Orders
+                </DropdownItem>
+                <DropdownItem
+                  key="reviews"
+                  textValue="My Reviews"
+                  className="rounded-none text-neutral-600"
+                  to="/admin/account?tab=reviews"
+                  as={Link}
+                >
+                  My Reviews
+                </DropdownItem>
+                <DropdownItem
+                  key="logout"
+                  color="danger"
+                  textValue="Log Out"
+                  className="rounded-none"
+                  onClick={() => {
+                    dispatch(logout());
+                    navigate("/");
+                  }}
+                >
+                  Log Out
+                </DropdownItem>
+              </DropdownMenu>
+            ) : (
+              <DropdownMenu aria-label="Profile Actions" variant="flat">
+                <DropdownItem
+                  key="profile"
+                  textValue="New Here"
+                  className="h-14 gap-2 rounded-none"
+                >
+                  <p className="font-semibold">New here?</p>
+                </DropdownItem>
+                <DropdownItem
+                  key="login"
+                  textValue="Login"
+                  className="rounded-none text-neutral-600"
+                  as={Link}
+                  to="/login"
+                >
+                  Login
+                </DropdownItem>
+                <DropdownItem
+                  key="register"
+                  textValue="Register"
+                  className="rounded-none text-neutral-600"
+                  as={Link}
+                  to="/register"
+                >
+                  Register
+                </DropdownItem>
+              </DropdownMenu>
+            )}
+          </Dropdown>
         </div>
       </div>
       <div className="sm:flex justify-between w-full hidden">

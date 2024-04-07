@@ -13,8 +13,9 @@ import CollectionList from "./pages/admin/CollectionsList";
 import AddCollection from "./pages/admin/AddCollection";
 import EditCollection from "./pages/admin/EditCollection";
 import Cart from "./pages/Cart";
-import Checkout from "./pages/Checkout";
+import Checkout from "./pages/private/Checkout";
 import OrderList from "./pages/admin/OrderList";
+import Account from "./pages/private/Account";
 
 export const publicRoutes = [
   { path: "/", element: <Home /> },
@@ -29,9 +30,13 @@ export const publicRoutes = [
   { path: "/register", element: <Register /> },
 ];
 
-export const privateRoutes = [{ path: "/checkout", element: <Checkout /> }];
+export const privateRoutes = [
+  { path: "/checkout", element: <Checkout /> },
+  { path: "/user/account", element: <Account /> },
+];
 
 export const adminRoutes = [
+  { path: "/admin/account", element: <Account /> },
   { path: "/admin/", element: <Navigate to="/admin/products" /> },
   { path: "/admin/products/create", element: <AddProduct /> },
   { path: "/admin/products", element: <AdminProductList /> },

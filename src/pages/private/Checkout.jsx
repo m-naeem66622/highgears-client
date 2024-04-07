@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { CustomButton } from "../components/CustomButton";
-import Text from "../components/Text";
+import { CustomButton } from "../../components/CustomButton";
+import Text from "../../components/Text";
 import { Avatar, Image } from "@nextui-org/react";
-import { notify } from "../utils/notify";
-import Page404 from "./Page404";
+import { notify } from "../../utils/notify";
+import Page404 from "../Page404";
 import axios from "axios";
-import { ORDERS_URL } from "../constants";
+import { ORDERS_URL } from "../../constants";
 
 const Checkout = () => {
   const cart = useSelector((state) => state.cart);
@@ -59,6 +59,8 @@ const Checkout = () => {
         <Text as="h3">Checkout</Text>
       </div>
       <div className="flex flex-col lg:flex-row gap-x-8">
+        {/* <div className="w-[42rem] max-w-[42rem]">
+          <div className="flex flex-col gap-y-3"> */}
         <div className="flex flex-col gap-y-4 w-full">
           {cart.cartItems.map((item) => (
             <div key={item.id} className="flex gap-x-4">

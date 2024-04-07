@@ -91,11 +91,12 @@ function Register() {
       else if (error.response.status !== 400)
         message = toTitleCase(error.response?.data.error.message);
 
-      if (error.response.status === 400) {
-        for (const key in error.response?.data.error) {
-          const value = error.response?.data.error[key];
+      if (error.response?.status === 400) {
+        for (const key in error.response?.data.errors) {
+          const value = error.response?.data.errors[key];
           setError(key, { type: "manual", message: value });
         }
+        message = error.response?.data.message;
       }
 
       console.log("Error:", error.response?.data);
