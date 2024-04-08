@@ -6,9 +6,10 @@ import { useSearchParams } from "react-router-dom";
 import { toTitleCase } from "../../utils/strings";
 import Profile from "../../components/private/Profile";
 import ComingSoon from "../ComingSoon";
+import OrdersList from "../../components/private/OrdersList";
 
 const Account = () => {
-  const [searchParams, setSearchParams] = useSearchParams({ hello: "world" });
+  const [searchParams, setSearchParams] = useSearchParams();
   const userInfo = useSelector((state) => state.auth.userInfo);
   const [selectedKeys, setSelectedKeys] = useState();
 
@@ -25,14 +26,13 @@ const Account = () => {
       <Text as="h3" className="mb-4 text-center">
         Hi! {toTitleCase(userInfo.firstName)} {toTitleCase(userInfo.lastName)}
       </Text>
-      <div className="flex gap-x-2">
-        {/* Left Pane */}
+      <div className="flex flex-col md:flex-row gap-x-2">
         <Tabs
           aria-label="Account Options"
           variant="light"
           radius="none"
           classNames={{
-            tabList: "flex flex-col w-[250px]",
+            tabList: "flex md:flex-col md:w-[250px]",
             cursor: "bg-black",
             tabContent:
               "group-data-[selected=true]:text-white hover:text-neutral-500",
@@ -46,7 +46,7 @@ const Account = () => {
             <Profile />
           </Tab>
           <Tab key="orders" title="My Orders">
-            <ComingSoon />
+            <OrdersList />
           </Tab>
           <Tab key="reviews" title="My Reviews">
             <ComingSoon />
