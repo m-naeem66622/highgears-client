@@ -1,10 +1,15 @@
 import React from "react";
+import Text from "../components/Text";
 
 const ComingSoon = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-[80vh]">
-      <h1 className="text-4xl font-bold mb-4">Coming Soon</h1>
-      <p className="text-lg">Stay tuned for exciting updates!</p>
+      <Text as="h1" className="mb-4">
+        Coming Soon
+      </Text>
+      <Text as="p" className="text-lg">
+        Stay tuned for exciting updates!
+      </Text>
     </div>
   );
 };

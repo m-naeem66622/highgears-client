@@ -128,7 +128,7 @@ const ProductDetail = () => {
                 key={index}
                 className={`w-1/6 cursor-pointer relative aspect-square ${
                   index === selectedImage
-                    ? "border-2 border-black rounded-2xl"
+                    ? "border-2 border-black rounded-xl"
                     : ""
                 }`}
                 onClick={() => handleImageSelect(index)}
