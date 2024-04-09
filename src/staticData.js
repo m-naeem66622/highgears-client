@@ -47,7 +47,8 @@ export const cartColumns = [
 
 export const orderColumns = [
   { name: "ORDER ID", uid: "_id", sortable: true },
-  { name: "CUSTOMER", uid: "user.name", sortable: true },
+  { name: "CUSTOMER NAME", uid: "user.name", sortable: true },
+  { name: "EMAIL", uid: "user.email", sortable: true },
   { name: "PHONE NUMBER", uid: "user.phoneNumber", sortable: true },
   { name: "AMOUNT", uid: "totalPrice", sortable: true },
   { name: "PLACED AT", uid: "placedAt", sortable: true },

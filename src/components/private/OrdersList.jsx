@@ -243,7 +243,17 @@ const OrdersList = () => {
                   })}
                 </div>
               </div>
-              <em>{order.paymentMethod}</em>
+              <div className="text-sm text-gray-600">
+                <div>
+                  <Chip
+                    radius="none"
+                    size="sm"
+                    color={statusColorMap[order.paymentStatus]}
+                  >
+                    {order.paymentStatus}
+                  </Chip>
+                </div>
+              </div>
             </div>
           </div>
           <div className="grid grid-cols-1 gap-4">

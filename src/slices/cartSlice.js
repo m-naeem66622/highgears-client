@@ -9,7 +9,11 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    setCart: (state, action) => updateCart({ ...state, ...action.payload }),
+    setCart: (state, action) => {
+      const updatedState = { ...state, ...action.payload };
+      localStorage.setItem("cart", JSON.stringify(updatedState));
+      return updatedState;
+    },
     addToCart: (state, action) => {
       // eslint-disable-next-line no-unused-vars
       const {
@@ -52,7 +56,7 @@ const cartSlice = createSlice({
     },
     resetCart: () => {
       localStorage.removeItem("cart");
-      return initialState;
+      return { cartItems: [], shippingAddress: {}, paymentMethod: "UNKNOWN" };
     },
   },
 });

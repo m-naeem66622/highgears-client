@@ -120,8 +120,6 @@ const OrderList = () => {
         }
       );
 
-      console.log("Response:", response.data);
-      // setPage(response.data.pagination.page);
       setPages(response.data.pagination.totalPages);
       setLimit(response.data.pagination.limit);
       setTotalOrders(response.data.pagination.totalOrders);
@@ -174,6 +172,8 @@ const OrderList = () => {
         });
       case "user.name":
         return toTitleCase(order.user.firstName + " " + order.user.lastName);
+      case "user.email":
+        return order.user.email;
       case "user.phoneNumber":
         return formatPhoneNumber(order.user.phoneNumber);
       case "actions":

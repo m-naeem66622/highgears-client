@@ -15,9 +15,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { cartColumns } from "../staticData";
 import { CustomButton } from "../components/CustomButton";
 import { Link, useNavigate } from "react-router-dom";
-import { clearCartItems, removeFromCart, setCart } from "../slices/cartSlice";
+import { removeFromCart, setCart } from "../slices/cartSlice";
 import axios from "axios";
 import { ORDERS_URL } from "../constants";
+import { formatPhoneNumber } from "../utils/strings";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -78,6 +79,7 @@ const Cart = () => {
           size: item.size,
           color: item.color,
         })),
+      };
       const response = await axios.post(
         `${ORDERS_URL}/checkout`,
         formattedData,
@@ -87,8 +89,32 @@ const Cart = () => {
           },
         }
       );
-      
-      dispatch(setCart({ ...response.data.data, showCheckout: true }));
+      const formParameters = {
+        ...response.data.data.formParameters,
+        CUSTOMER_MOBILE_NO: formatPhoneNumber(userInfo.phoneNumber),
+        CUSTOMER_EMAIL_ADDRESS: userInfo.email,
+        TXNDESC: "Payment for products",
+        SUCCESS_URL: `${window.location.origin}/user/orders/${cart._id}`,
+        FAILURE_URL: `${window.location.origin}/user/orders/${cart._id}`,
+        CHECKOUT_URL: `https://5btftnnv-5000.inc1.devtunnels.ms/api/orders/payfast/checkout`,
+        ORDER_DATE: new Date().toISOString().substring(0, 10),
+        CUSTOMER_NAME: `${userInfo.firstName} ${userInfo.lastName}`,
+        CUSTOMER_ID: userInfo._id,
+        COUNTRY: userInfo.address.country,
+        SHIPPING_STATE_PROVINCE: userInfo.address.state,
+        SHIPPING_ADDRESS_CITU: userInfo.address.city,
+        SHIPPING_POSTALCODE: userInfo.address.zipCode,
+        SHIPPING_ADDRESS_1: `${userInfo.address.street}, ${userInfo.address.city}, ${userInfo.address.state}, ${userInfo.address.country} - ${userInfo.address.zipCode}`,
+        ITEMS: cart.cartItems.map((item) => ({
+          SKU: item.sku,
+          NAME: item.name,
+          PRICE: item.selling_price * item.quantity,
+          QTY: item.quantity,
+        })),
+      };
+      dispatch(
+        setCart({ ...response.data.data, showCheckout: true, formParameters })
+      );
       navigate("/checkout");
     } catch (error) {
       console.log(error);
@@ -96,92 +122,115 @@ const Cart = () => {
   };
 
   return (
-    <div className="mb-8">
-      <div className="mb-4">
-        <Text as="h3">Cart</Text>
-      </div>
-      <div className="flex flex-col lg:flex-row gap-x-8">
-        <Table
-          aria-label="Cart Table"
-          radius="none"
-          bottomContentPlacement="outside"
-          classNames={{
-            tr: "first:rounded-none last:rounded-none",
-            th: "first:rounded-none last:rounded-none bg-black text-white",
-          }}
-        >
-          <TableHeader columns={cartColumns}>
-            {(column) => (
-              <TableColumn
-                key={column.uid}
-                align={column.uid === "actions" ? "center" : "start"}
+    <>
+      <div className="mb-8">
+        <div className="mb-4">
+          <Text as="h3">Cart</Text>
+        </div>
+        <div className="flex flex-col lg:flex-row gap-x-8">
+          <div className="">
+            <div className="">
+              <div className="flex justify-between items-center">
+                <Text as="h4" className="mb-2">
+                  Shipping Address
+                </Text>
+                <NextUI_Link
+                  as={Link}
+                  to="/user/account?tab=profile&redirect=/cart"
+                  underline
+                >
+                  Edit
+                </NextUI_Link>
+              </div>
+              <Text as="p">
+                {userInfo.address.country}, {userInfo.address.state},{" "}
+                {userInfo.address.city}, {userInfo.address.street} -{" "}
+                {userInfo.address.zipCode}
+              </Text>
+            </div>
+            <Table
+              aria-label="Cart Table"
+              radius="none"
+              bottomContentPlacement="outside"
+              classNames={{
+                tr: "first:rounded-none last:rounded-none",
+                th: "first:rounded-none last:rounded-none bg-black text-white",
+              }}
+            >
+              <TableHeader columns={cartColumns}>
+                {(column) => (
+                  <TableColumn
+                    key={column.uid}
+                    align={column.uid === "actions" ? "center" : "start"}
+                  >
+                    {column.name}
+                  </TableColumn>
+                )}
+              </TableHeader>
+              <TableBody
+                items={cart.cartItems}
+                emptyContent={"No products in cart"}
               >
-                {column.name}
-              </TableColumn>
-            )}
-          </TableHeader>
-          <TableBody
-            items={cart.cartItems}
-            emptyContent={"No products in cart"}
-          >
-            {(item) => (
-              <TableRow key={item._id}>
-                {(columnKey) => (
-                  <TableCell>{renderCell(item, columnKey)}</TableCell>
+                {(item) => (
+                  <TableRow key={item._id}>
+                    {(columnKey) => (
+                      <TableCell>{renderCell(item, columnKey)}</TableCell>
+                    )}
+                  </TableRow>
                 )}
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-        {cart.cartItems.length > 0 && (
-          <div className="w-[42rem] max-w-[42rem]">
-            <div className="sticky top-4 left-0 p-4 shadow-md">
-              <div className="flex flex-col gap-y-3">
-                <Text as="p" className="flex justify-between">
-                  <strong>Total Items Cost:</strong>
-                  <span className="font-mono">{cart.itemsPrice}</span>
-                </Text>
-                <Text as="p" className="flex justify-between">
-                  <strong> Shipping Price:</strong>
-                  <span className="font-mono">{cart.shippingPrice}</span>
-                </Text>
-                <Text as="p" className="flex justify-between">
-                  <strong> Discount Price:</strong>
-                  <span className="font-mono">-{cart.discountedPrice}</span>
-                </Text>
-                <Text as="p" className="flex justify-between">
-                  <strong> Total Bill:</strong>
-                  <span>
-                    <strong>$</strong>{" "}
-                    <strong className="font-mono">{cart.totalPrice}</strong>
-                  </span>
-                </Text>
-                {userInfo ? (
-                  <CustomButton
-                    onClick={handleCheckout}
-                    color="dark"
-                    radius="none"
-                    size="lg"
-                  >
-                    Checkout
-                  </CustomButton>
-                ) : (
-                  <CustomButton
-                    as={Link}
-                    to="/login?redirect=/cart"
-                    color="dark"
-                    radius="none"
-                    size="lg"
-                  >
-                    Login to Checkout
-                  </CustomButton>
-                )}
+              </TableBody>
+            </Table>
+          </div>
+          {cart.cartItems.length > 0 && (
+            <div className="w-[42rem] max-w-[42rem]">
+              <div className="sticky top-4 left-0 p-4 shadow-md">
+                <div className="flex flex-col gap-y-3">
+                  <Text as="p" className="flex justify-between">
+                    <strong>Total Items Cost:</strong>
+                    <span className="font-mono">{cart.itemsPrice}</span>
+                  </Text>
+                  <Text as="p" className="flex justify-between">
+                    <strong> Shipping Price:</strong>
+                    <span className="font-mono">{cart.shippingPrice}</span>
+                  </Text>
+                  <Text as="p" className="flex justify-between">
+                    <strong> Discount Price:</strong>
+                    <span className="font-mono">-{cart.discountedPrice}</span>
+                  </Text>
+                  <Text as="p" className="flex justify-between">
+                    <strong> Total Bill:</strong>
+                    <span>
+                      <strong>$</strong>{" "}
+                      <strong className="font-mono">{cart.totalPrice}</strong>
+                    </span>
+                  </Text>
+                  {userInfo ? (
+                    <CustomButton
+                      onClick={handleCheckout}
+                      color="dark"
+                      radius="none"
+                      size="lg"
+                    >
+                      Checkout
+                    </CustomButton>
+                  ) : (
+                    <CustomButton
+                      as={Link}
+                      to="/login?redirect=/cart"
+                      color="dark"
+                      radius="none"
+                      size="lg"
+                    >
+                      Login to Checkout
+                    </CustomButton>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

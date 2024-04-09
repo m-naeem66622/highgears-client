@@ -16,6 +16,7 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/private/Checkout";
 import OrderList from "./pages/admin/OrderList";
 import Account from "./pages/private/Account";
+import OrderDetail from "./pages/private/OrderDetail";
 
 export const publicRoutes = [
   { path: "/", element: <Home /> },
@@ -33,6 +34,7 @@ export const publicRoutes = [
 export const privateRoutes = [
   { path: "/checkout", element: <Checkout /> },
   { path: "/user/account", element: <Account /> },
+  { path: "/user/orders/:id", element: <OrderDetail /> },
 ];
 
 export const adminRoutes = [

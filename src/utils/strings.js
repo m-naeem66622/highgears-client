@@ -25,11 +25,18 @@ export const slugify = (text) => {
 };
 
 export function formatPhoneNumber(phoneNumber) {
-  let formattedNumber = phoneNumber.format;
-  formattedNumber = formattedNumber.replace("..", phoneNumber.dialCode);
-  let numberParts = phoneNumber.number.match(/.{1,3}/g); // split number into groups of 3
-  numberParts.forEach((part) => {
-    formattedNumber = formattedNumber.replace("...", part);
-  });
+  let concatenatedNumber = phoneNumber.dialCode + phoneNumber.number;
+
+  let count = 0;
+  const formattedNumber = phoneNumber.format
+    .split("")
+    .map((char) => {
+      if (char === ".") {
+        return concatenatedNumber[count++];
+      }
+      return char;
+    })
+    .join("");
+
   return formattedNumber;
 }
