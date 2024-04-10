@@ -20,7 +20,7 @@ import { CustomButton } from "../../components/CustomButton";
 function AddProduct() {
   const navigate = useNavigate();
   const query = new URLSearchParams(window.location.search);
-  const dispatch = useDispatch();
+  const [rolling, setRolling] = useState(false);
   const {
     register,
     handleSubmit,
@@ -69,6 +69,7 @@ function AddProduct() {
   };
 
   const onSubmitHandle = async (data) => {
+    setRolling(true);
     try {
       const response = await axios.post(
         `${PRODUCTS_URL}`,
@@ -101,6 +102,7 @@ function AddProduct() {
       console.log("Error:", error.response?.data);
       notify("error", message);
     }
+    setRolling(false);
   };
 
   useEffect(() => {
@@ -277,6 +279,7 @@ function AddProduct() {
             radius="none"
             type="submit"
             className="w-full"
+            isLoading={rolling}
           >
             Add Product
           </CustomButton>

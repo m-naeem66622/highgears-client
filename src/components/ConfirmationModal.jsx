@@ -12,6 +12,7 @@ const ConfirmationModal = ({
   isOpen,
   onOpenChange,
   children,
+  rolling = false,
   title = "Modal Title",
 }) => {
   const confirmHandle = (_id) => {
@@ -33,13 +34,19 @@ const ConfirmationModal = ({
             <ModalHeader className="flex flex-col gap-1">{title}</ModalHeader>
             <ModalBody>{children}</ModalBody>
             <ModalFooter>
-              <CustomButton color="default" radius="none" onPress={onClose}>
+              <CustomButton
+                color="default"
+                radius="none"
+                onPress={rolling || onClose}
+                disabled={rolling}
+              >
                 Close
               </CustomButton>
               <CustomButton
                 color="danger"
                 radius="none"
                 onPress={confirmHandle}
+                isLoading={rolling}
               >
                 Confirm
               </CustomButton>

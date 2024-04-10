@@ -22,14 +22,12 @@ import {
 
 function EditCollection() {
   const navigate = useNavigate();
+  const [rolling, setRolling] = useState(false);
   const { slug } = useParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const query = new URLSearchParams(window.location.search);
-  const dispatch = useDispatch();
-  const [product, setProduct] = useState("");
   const {
-    register,
     handleSubmit,
     control,
     formState: { errors },
@@ -66,6 +64,7 @@ function EditCollection() {
   };
 
   const onSubmitHandle = async (data) => {
+    setRolling(true);
     try {
       const response = await axios.put(
         `${COLLECTIONS_URL}/${slug}`,
@@ -98,6 +97,7 @@ function EditCollection() {
       console.log("Error:", error.response?.data);
       notify("error", message);
     }
+    setRolling(false);
   };
 
   const productIdValidation = (productId) => {
@@ -306,6 +306,7 @@ function EditCollection() {
             radius="none"
             type="submit"
             className="w-full"
+            isLoading={rolling}
           >
             Update Collection
           </CustomButton>

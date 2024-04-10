@@ -20,6 +20,7 @@ import {
 
 function AddCollection() {
   const navigate = useNavigate();
+  const [rolling, setRolling] = useState(false);
   const query = new URLSearchParams(window.location.search);
   const {
     register,
@@ -59,6 +60,7 @@ function AddCollection() {
   };
 
   const onSubmitHandle = async (data) => {
+    setRolling(true);
     try {
       const response = await axios.post(`${COLLECTIONS_URL}`, getFormattedData(data), {
         headers: {
@@ -87,6 +89,7 @@ function AddCollection() {
       console.log("Error:", error.response?.data);
       notify("error", message);
     }
+    setRolling(false);
   };
 
   const productIdValidation = (productId) => {
@@ -249,6 +252,7 @@ function AddCollection() {
             radius="none"
             type="submit"
             className="w-full"
+            isLoading={rolling}
           >
             Add Collection
           </CustomButton>
@@ -268,7 +272,6 @@ function AddCollection() {
                       variant="flat"
                       radius="none"
                     >
-                      {/* <strong>Availability:</strong>{" "} */}
                       {product.in_stock ? "In Stock" : "Out of Stock"}
                     </Chip>
                   </div>

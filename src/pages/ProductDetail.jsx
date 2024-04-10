@@ -169,6 +169,15 @@ const ProductDetail = () => {
                   % off
                 </Chip>
               </div>
+              <div className="">
+                <Chip
+                  radius="none"
+                  color={data.in_stock ? "success" : "danger"}
+                  size="lg"
+                >
+                  {data.in_stock ? "In Stock" : "Out of Stock"}
+                </Chip>
+              </div>
               {data.shipping_price === 0 && (
                 <div className="flex items-center gap-x-2">
                   <span className="text-green-500">
@@ -260,13 +269,16 @@ const ProductDetail = () => {
             <div className="">
               <div className="flex gap-x-3">
                 <CustomButton
-                  color="dark"
+                  color={data.in_stock ? "dark" : "default"}
                   radius="none"
                   onClick={handleAddToCart}
+                  disabled={data.in_stock ? false : true}
                 >
                   {cartItems.some((item) => item._id === data._id)
                     ? "Update Cart"
-                    : "Add to Cart"}
+                    : data.in_stock
+                    ? "Add to Cart"
+                    : "Out of Stock"}
                 </CustomButton>
                 {cartItems.some((item) => item._id === data._id) && (
                   <CustomButton

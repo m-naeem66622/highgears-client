@@ -22,9 +22,9 @@ const AdvanceFilter = ({ filters, setFilters, handleOnClick }) => {
   return (
     <div className="p-4 bg-white rounded shadow">
       <h2 className="text-xl font-bold mb-4">Advanced Filter</h2>
-      <div className="flex justify-between">
-        <div className="flex items-start gap-x-6 gap-y-4">
-          <div className="flex flex-col gap-2 w-48 h-full max-w-md items-start justify-center">
+      <div className="flex flex-col sm:flex-row justify-between items-center">
+        <div className="flex flex-col sm:flex-row items-center gap-6">
+          <div className="flex flex-col gap-2 w-full sm:w-48 h-full max-w-md items-start justify-center">
             <Slider
               name="priceRange"
               label="Price Range"
@@ -36,6 +36,7 @@ const AdvanceFilter = ({ filters, setFilters, handleOnClick }) => {
               maxValue={priceRange[1]}
               showTooltip
               defaultValue={filters.priceRange}
+              // value={filters.priceRange}
               onChangeEnd={(value) => onChangeHandle("priceRange", value)}
               className="max-w-md"
             />
@@ -44,7 +45,7 @@ const AdvanceFilter = ({ filters, setFilters, handleOnClick }) => {
                 filters.priceRange.map((b) => `$${b}`).join(" - ")}
             </p>
           </div>
-          <div>
+          <div className="w-full sm:w-auto">
             <CheckboxGroup
               className="gap-1"
               label="Select sizes"
@@ -59,7 +60,7 @@ const AdvanceFilter = ({ filters, setFilters, handleOnClick }) => {
               ))}
             </CheckboxGroup>
           </div>
-          <div>
+          <div className="w-full sm:w-auto">
             <Select
               name="colors"
               placeholder="Select"
@@ -68,6 +69,8 @@ const AdvanceFilter = ({ filters, setFilters, handleOnClick }) => {
               className="w-60"
               labelPlacement="outside"
               onSelectionChange={(key) => onChangeHandle("colors", key)}
+              radius="none"
+              // items={colors}
             >
               {colors.map((color) => (
                 <SelectItem key={color.value} value={color.value}>
@@ -77,9 +80,11 @@ const AdvanceFilter = ({ filters, setFilters, handleOnClick }) => {
             </Select>
           </div>
         </div>
-        <CustomButton color="dark" radius="none" onClick={handleOnClick}>
-          Apply Filters
-        </CustomButton>
+        <div className="mt-4 sm:mt-0">
+          <CustomButton color="dark" radius="none" onClick={handleOnClick}>
+            Apply Filters
+          </CustomButton>
+        </div>
       </div>
     </div>
   );

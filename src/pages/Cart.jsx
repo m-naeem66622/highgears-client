@@ -23,6 +23,7 @@ import { formatPhoneNumber } from "../utils/strings";
 const Cart = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [rolling, setRolling] = useState(false);
   const userInfo = useSelector((state) => state.auth.userInfo);
   const cart = useSelector((state) => state.cart);
 
@@ -68,9 +69,8 @@ const Cart = () => {
   }, []);
 
   const handleCheckout = async () => {
-    console.log("Cart Items: ", cart.cartItems);
-    console.log("User Info: ", userInfo);
     if (!cart.cartItems.length) return;
+    setRolling(true);
     try {
       let formattedData = {
         products: cart.cartItems.map((item) => ({
@@ -117,8 +117,7 @@ const Cart = () => {
       );
       navigate("/checkout");
     } catch (error) {
-      console.log(error);
-    }
+    setRolling(false);
   };
 
   return (
@@ -129,25 +128,27 @@ const Cart = () => {
         </div>
         <div className="flex flex-col lg:flex-row gap-x-8">
           <div className="">
-            <div className="">
-              <div className="flex justify-between items-center">
-                <Text as="h4" className="mb-2">
-                  Shipping Address
+            {userInfo && (
+              <div className="">
+                <div className="flex justify-between items-center">
+                  <Text as="h4" className="mb-2">
+                    Shipping Address
+                  </Text>
+                  <NextUI_Link
+                    as={Link}
+                    to="/user/account?tab=profile&redirect=/cart"
+                    underline
+                  >
+                    Edit
+                  </NextUI_Link>
+                </div>
+                <Text as="p">
+                  {userInfo.address.country}, {userInfo.address.state},{" "}
+                  {userInfo.address.city}, {userInfo.address.street} -{" "}
+                  {userInfo.address.zipCode}
                 </Text>
-                <NextUI_Link
-                  as={Link}
-                  to="/user/account?tab=profile&redirect=/cart"
-                  underline
-                >
-                  Edit
-                </NextUI_Link>
               </div>
-              <Text as="p">
-                {userInfo.address.country}, {userInfo.address.state},{" "}
-                {userInfo.address.city}, {userInfo.address.street} -{" "}
-                {userInfo.address.zipCode}
-              </Text>
-            </div>
+            )}
             <Table
               aria-label="Cart Table"
               radius="none"
@@ -210,6 +211,7 @@ const Cart = () => {
                       color="dark"
                       radius="none"
                       size="lg"
+                      isLoading={rolling}
                     >
                       Checkout
                     </CustomButton>

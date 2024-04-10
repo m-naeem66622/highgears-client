@@ -52,6 +52,7 @@ const Profile = () => {
         obj.state = state.isoCode;
         const city = `${userInfo.address.city}-${country.isoCode}-${state.isoCode}`;
         obj.city = city;
+        obj.street = userInfo.address.street;
         obj.zipCode = userInfo.address.zipCode;
         return obj;
       })(),
@@ -136,6 +137,7 @@ const Profile = () => {
   };
 
   const handleDeleteAccount = async () => {
+    setRolling({ for: "delete", value: true });
     try {
       const response = await axios.delete(`${USER_URL}/profile`, {
         headers: {
@@ -156,6 +158,7 @@ const Profile = () => {
 
       notify("error", message);
     }
+    setRolling({ for: "", value: false });
   };
 
   useEffect(() => {
@@ -168,6 +171,7 @@ const Profile = () => {
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         onConfirm={() => handleDeleteAccount()}
+        rolling={rolling.for === "delete" && rolling.value}
         title="Delete Confirmation"
       >
         <Text as="p" className="py-4 sm:text-lg">
@@ -278,6 +282,14 @@ const Profile = () => {
             </div>
             <div className="flex flex-col sm:flex-row gap-x-3 gap-y-6">
               <Input
+                name="address.street"
+                placeholder="Street ABC"
+                label="Street"
+                defaultValue={userInfo.address.street}
+                control={control}
+                error={errors.address?.street?.message}
+              />
+              <Input
                 name="address.zipCode"
                 placeholder="52120"
                 label="Zip Code"
@@ -287,6 +299,8 @@ const Profile = () => {
                 rules={{ required: "Zip code name is required" }}
                 error={errors.address?.zipCode?.message}
               />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-6">
               <InputPhoneNumber
                 isRequired
                 control={control}

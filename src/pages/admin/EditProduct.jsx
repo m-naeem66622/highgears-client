@@ -35,10 +35,10 @@ function EditProduct() {
   const navigate = useNavigate();
   const { _id } = useParams();
   const [loading, setLoading] = useState(true);
+  const [rolling, setRolling] = useState(false);
   const [imagesUrl, setImagesUrl] = useState([]); // To hold images url already stored on server
   const [error, setError] = useState(null);
   const query = new URLSearchParams(window.location.search);
-  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -75,6 +75,7 @@ function EditProduct() {
   };
 
   const onSubmitHandle = async (data) => {
+    setRolling(true);
     try {
       const response = await axios.put(
         `${PRODUCTS_URL}/${_id}`,
@@ -106,6 +107,7 @@ function EditProduct() {
       console.log("Error:", error.response?.data);
       notify("error", message);
     }
+    setRolling(false);
   };
 
   useEffect(() => {
@@ -357,6 +359,7 @@ function EditProduct() {
             radius="none"
             type="submit"
             className="w-full"
+            isLoading={rolling}
           >
             Update Product
           </CustomButton>

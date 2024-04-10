@@ -8,12 +8,12 @@ import { notify } from "../utils/notify";
 import { setCredentials } from "../slices/authSlice";
 import { AUTH_URL } from "../constants";
 import Input from "../components/Input";
-import { Button } from "@nextui-org/react";
 import { CustomButton } from "../components/CustomButton";
 
 function Login() {
   const navigate = useNavigate();
   const query = new URLSearchParams(window.location.search);
+  const [rolling, setRolling] = useState(false);
   const dispatch = useDispatch();
   const {
     handleSubmit,
@@ -27,6 +27,7 @@ function Login() {
   });
 
   const onSubmitHandle = async (data) => {
+    setRolling(true);
     try {
       const response = await axios.post(`${AUTH_URL}/login`, data);
       dispatch(setCredentials(response.data));
@@ -49,6 +50,7 @@ function Login() {
 
       notify(notifyMsg.type, notifyMsg.message);
     }
+    setRolling(false);
   };
 
   return (
@@ -99,6 +101,7 @@ function Login() {
               radius="none"
               type="submit"
               className="w-full"
+              isLoading={rolling}
             >
               Sign in
             </CustomButton>

@@ -20,6 +20,7 @@ import { CustomButton } from "../components/CustomButton";
 function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [rolling, setRolling] = useState(false);
   const [ipData, setIpData] = useState({ countryCode: "PK" });
   const {
     handleSubmit,
@@ -39,6 +40,7 @@ function Register() {
         country: "",
         state: "",
         city: "",
+        street: "",
         zipCode: "",
       },
       phoneNumber: {
@@ -75,6 +77,7 @@ function Register() {
   };
 
   const onSubmitHandle = async (data) => {
+    setRolling(true);
     try {
       const response = await axios.post(
         `${AUTH_URL}/register`,
@@ -102,6 +105,7 @@ function Register() {
       console.log("Error:", error.response?.data);
       notify("error", message);
     }
+    setRolling(false);
   };
 
   useEffect(() => {
@@ -225,6 +229,15 @@ function Register() {
               error={errors.address?.city?.message}
             />
             <Input
+              name="address.street"
+              placeholder="Street ABC"
+              label="Street"
+              control={control}
+              error={errors.address?.street?.message}
+            />
+          </div>
+          <div className="flex flex-col sm:flex-row gap-x-3 gap-y-6">
+            <Input
               name="address.zipCode"
               placeholder="52120"
               label="Zip Code"
@@ -234,8 +247,6 @@ function Register() {
               rules={{ required: "Zip code name is required" }}
               error={errors.address?.zipCode?.message}
             />
-          </div>
-          <div className="flex flex-col sm:flex-row gap-x-3 gap-y-6">
             <InputPhoneNumber
               isRequired
               control={control}
@@ -247,6 +258,9 @@ function Register() {
               }}
               error={errors.phoneNumber}
             />
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-x-3 gap-y-6">
             <Input
               name="password"
               placeholder="Enter password"
@@ -267,6 +281,7 @@ function Register() {
             radius="none"
             type="submit"
             className="w-full"
+            isLoading={rolling}
           >
             Register
           </CustomButton>

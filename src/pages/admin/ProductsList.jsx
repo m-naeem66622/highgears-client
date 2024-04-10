@@ -42,6 +42,7 @@ const INITIAL_VISIBLE_COLUMNS = [
 
 const ProductList = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [rolling, setRolling] = React.useState(false);
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
   const [visibleColumns, setVisibleColumns] = React.useState(
@@ -95,6 +96,7 @@ const ProductList = () => {
 
   const handleDeleteProduct = async (_id) => {
     return new Promise((resolve, reject) => {
+      setRolling(true);
       axios
         .delete(`${PRODUCTS_URL}/${_id}`, {
           headers: {
@@ -105,8 +107,7 @@ const ProductList = () => {
           notify("success", "Product deleted successfully");
 
           if (page < pages) {
-            // fetchProducts();
-            // TODO: Fetch the products again
+            fetchProducts();
           } else {
             setProducts((prev) =>
               prev.filter((product) => product._id !== _id)
@@ -115,16 +116,18 @@ const ProductList = () => {
             setPages(Math.ceil(newTotalProducts / limit));
           }
 
+          setRolling(false);
           resolve(); // Resolve the promise if the deletion was successful
         })
         .catch((error) => {
           let message;
 
           if (!error.response) message = error.message;
-          else message = toTitleCase(error.response?.data.error.message);
+          else message = toTitleCase(error.response?.data?.error?.message);
 
           console.log("Error:", error.response?.data);
           notify("error", message);
+          setRolling(false);
           reject(error); // Reject the promise if the deletion failed
         });
     });
@@ -381,6 +384,7 @@ const ProductList = () => {
         onOpenChange={onOpenChange}
         onConfirm={() => handleDeleteProduct(productToDelete)}
         title="Delete Confirmation"
+        rolling={rolling}
       >
         <Text as="p" className="py-4 sm:text-lg">
           Are you sure you want to delete this product?

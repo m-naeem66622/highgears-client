@@ -42,6 +42,7 @@ const INITIAL_VISIBLE_COLUMNS = [
 
 const CollectionsList = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [rolling, setRolling] = React.useState(false);
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
   const [visibleColumns, setVisibleColumns] = React.useState(
@@ -95,6 +96,7 @@ const CollectionsList = () => {
 
   const handleDeleteCollection = async (slug) => {
     return new Promise((resolve, reject) => {
+      setRolling(true);
       axios
         .delete(`${COLLECTIONS_URL}/${slug}`, {
           headers: {
@@ -105,8 +107,7 @@ const CollectionsList = () => {
           notify("success", "Collection deleted successfully");
 
           if (page < pages) {
-            // fetchCollections();
-            // TODO: Fetch new collections
+            fetchCollections();
           } else {
             setCollections((prev) =>
               prev.filter((collection) => collection.slug !== slug)
@@ -115,16 +116,18 @@ const CollectionsList = () => {
             setPages(Math.ceil(newTotalCollections / limit));
           }
 
+          setRolling(false);
           resolve(); // Resolve the promise if the deletion was successful
         })
         .catch((error) => {
           let message;
 
           if (!error.response) message = error.message;
-          else message = toTitleCase(error.response?.data.error.message);
+          else message = toTitleCase(error.response?.data?.error?.message);
 
           console.log("Error:", error.response?.data);
           notify("error", message);
+          setRolling(false);
           reject(error); // Reject the promise if the deletion failed
         });
     });
@@ -379,6 +382,7 @@ const CollectionsList = () => {
         onOpenChange={onOpenChange}
         onConfirm={() => handleDeleteCollection(collectionToDelete)}
         title="Delete Confirmation"
+        rolling={rolling}
       >
         <Text as="p" className="py-4 lg:text-lg">
           Are you sure you want to delete this collection?

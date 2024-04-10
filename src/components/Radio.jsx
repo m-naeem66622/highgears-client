@@ -26,6 +26,14 @@ const Radio = ({
         <RadioGroup
           isRequired={isRequired}
           label={label}
+          value={
+            field.value === "true"
+              ? true
+              : field.value === "false"
+              ? false
+              : field.value
+          }
+          onValueChange={(value) => field.onChange(value)}
           orientation={orientation}
           defaultValue={defaultValue}
           isInvalid={error ? true : false}
@@ -38,7 +46,6 @@ const Radio = ({
               key={index}
               value={option.value}
               label={option.label}
-              checked={Object.values(items).includes(option.value)}
             >
               {option.label}
             </CustomRadio>

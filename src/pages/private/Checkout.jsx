@@ -19,6 +19,7 @@ const Checkout = () => {
     console.log("Cart Items: ", cart.cartItems);
     console.log("User Info: ", userInfo);
     if (!cart.cartItems.length) return;
+    setRolling(true);
     try {
       let formattedData = {
         ...cart,
@@ -46,14 +47,14 @@ const Checkout = () => {
         },
       });
       notify("success", response.data.message);
+      setRolling(false);
 
       setLoading(true);
       dispatch(resetCart());
 
       form.submit();
     } catch (error) {
-      console.log(error);
-    }
+    setRolling(false);
   };
 
   const onSubmitHandle = async (e) => {
@@ -196,6 +197,7 @@ const Checkout = () => {
                 radius="none"
                 size="lg"
                 type="submit"
+                isLoading={rolling}
               >
                 Place Order
               </CustomButton>
