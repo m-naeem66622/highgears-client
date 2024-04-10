@@ -37,7 +37,6 @@ const Validate = {
   },
   phoneNumber: {
     countryCode: (value) => {
-      console.log("countryCode -> Value", value);
       if (!value.countryCode) {
         return "Country code is required";
       }

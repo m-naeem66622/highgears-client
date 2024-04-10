@@ -1,5 +1,3 @@
-import { current } from "@reduxjs/toolkit";
-
 export const addDecimals = (num) => {
   return (Math.round(num * 100) / 100).toFixed(2);
 };

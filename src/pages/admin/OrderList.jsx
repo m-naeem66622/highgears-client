@@ -24,7 +24,7 @@ import {
   formatPhoneNumber,
   toTitleCase,
 } from "../../utils/strings";
-import { orderColumns as columns, orderStatus } from "../../staticData";
+import { orderColumns as columns } from "../../staticData";
 import { CustomButton } from "../../components/CustomButton";
 import { Link } from "react-router-dom";
 import { notify } from "../../utils/notify";
@@ -125,7 +125,7 @@ const OrderList = () => {
       setTotalOrders(response.data.pagination.totalOrders);
       setOrders(response.data.data);
     } catch (error) {
-      console.log("Error while fetching orders:", error.response);
+      console.log("Error while fetching orders:", error.response?.data);
       let message;
       if (!error.response) {
         message = error.message;

@@ -1,4 +1,3 @@
-import React from "react";
 import { Card, CardHeader, CardBody, Image } from "@nextui-org/react";
 import { Link } from "react-router-dom";
 import { BASE_URL } from "../constants";

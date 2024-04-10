@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import { forwardRef } from "react";
 import { useInput } from "@nextui-org/react";
 
 const CustomInputFile = forwardRef((props, ref) => {

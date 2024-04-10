@@ -15,7 +15,6 @@ const cartSlice = createSlice({
       return updatedState;
     },
     addToCart: (state, action) => {
-      // eslint-disable-next-line no-unused-vars
       const {
         avg_rating,
         in_stock,
@@ -41,7 +40,6 @@ const cartSlice = createSlice({
       return updateCart(state, item);
     },
     removeFromCart: (state, action) => {
-      console.log("action.payload", action.payload);
       state.cartItems = state.cartItems.filter((x) => x._id !== action.payload);
       return updateCart(state);
     },

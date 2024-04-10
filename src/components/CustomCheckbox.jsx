@@ -1,4 +1,3 @@
-import React from "react";
 import { useCheckbox, Chip, VisuallyHidden, tv } from "@nextui-org/react";
 
 const checkbox = tv({

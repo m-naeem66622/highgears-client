@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Text from "../../components/Text";
 import { useSelector } from "react-redux";
 import { Tabs, Tab } from "@nextui-org/react";

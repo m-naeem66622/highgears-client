@@ -33,7 +33,6 @@ const ProductDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedImage, setSelectedImage] = useState(0);
-  const [activeTab, setActiveTab] = useState("description");
   const [quantity, setQuantity] = useState(1);
   const [size, setSize] = useState(
     cartItems.find((item) => item._id === _id)?.size || ""
@@ -46,16 +45,12 @@ const ProductDetail = () => {
     setSelectedImage(index);
   };
 
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
-  };
-
   const fetchProduct = async () => {
     try {
       const response = await axios.get(`${PRODUCTS_URL}/${_id}`);
       setData(response.data.data);
     } catch (error) {
-      console.log("Error while fetching product:", error);
+      console.log("Error while fetching product:", error.response?.data);
       let errorObj = {};
       if (!error.response) {
         errorObj = { message: error.message, code: error.code };
@@ -254,7 +249,7 @@ const ProductDetail = () => {
                   color="dark"
                   radius="none"
                   className="min-w-fit"
-                  onClick={(e) => setQuantity(quantity + 1)}
+                  onClick={() => setQuantity(quantity + 1)}
                 >
                   <i className="fa-solid fa-plus"></i>
                 </CustomButton>

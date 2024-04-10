@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { formatPhoneNumber, toTitleCase } from "../../utils/strings";
 import Text from "../Text";
@@ -116,7 +116,7 @@ const Profile = () => {
       setMode("read");
       notify("success", response.data.message);
     } catch (error) {
-      console.log("Error:", error.response);
+      console.log("Error while updating profile:", error.response?.data);
       let message = "Oops! Something went wrong";
 
       // Check if the error is not from the server
@@ -149,7 +149,7 @@ const Profile = () => {
       navigate("/");
       dispatch(logout());
     } catch (error) {
-      console.log("Error:", error.response);
+      console.log("Error while deleting profile:", error.response?.data);
       let message = "Oops! Something went wrong";
 
       // Check if the error is not from the server

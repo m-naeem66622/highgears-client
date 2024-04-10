@@ -3,7 +3,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { CartIcon } from "../assets/CartIcon";
 import {
-  Input,
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
@@ -98,7 +97,7 @@ const Header = () => {
     <>
       <div className="flex justify-between items-center w-full">
         <div className="sm:flex gap-x-3 hidden">
-          {publicRoutes.map((route, index) => {
+          {publicRoutes.map((route) => {
             const isActive =
               route.path === pathname ||
               publicNestedRoutes[route.key].some((r) => r.path === pathname);

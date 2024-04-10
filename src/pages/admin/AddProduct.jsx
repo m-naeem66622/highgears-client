@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import axios from "axios";
 import { notify } from "../../utils/notify";
 import { toTitleCase } from "../../utils/strings";
-import { setCredentials } from "../../slices/authSlice";
 import { PRODUCTS_URL } from "../../constants";
 import { Image } from "@nextui-org/react";
 import Input from "../../components/Input";
@@ -85,6 +83,7 @@ function AddProduct() {
       navigate(query.get("redirect") || "/admin/products");
       notify("success", response.data.message);
     } catch (error) {
+      console.log("Error while adding product:", error.response?.data);
       let message = "Oops! Something went wrong";
 
       // Check if the error is not from the server
@@ -93,13 +92,14 @@ function AddProduct() {
         message = toTitleCase(error.response?.data.error.message);
 
       if (error.response.status === 400) {
-        for (const key in error.response?.data.error) {
-          const value = error.response?.data.error[key];
+        message = error.response.data.message;
+        for (const key in error.response?.data.errors) {
+          message = error.response.data.message;
+          const value = error.response?.data.errors[key];
           setError(key, { type: "manual", message: value });
         }
       }
 
-      console.log("Error:", error.response?.data);
       notify("error", message);
     }
     setRolling(false);

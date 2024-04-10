@@ -120,12 +120,12 @@ const ProductList = () => {
           resolve(); // Resolve the promise if the deletion was successful
         })
         .catch((error) => {
+          console.log("Error while deleting product:", error.response?.data);
           let message;
 
           if (!error.response) message = error.message;
           else message = toTitleCase(error.response?.data?.error?.message);
 
-          console.log("Error:", error.response?.data);
           notify("error", message);
           setRolling(false);
           reject(error); // Reject the promise if the deletion failed
@@ -162,7 +162,7 @@ const ProductList = () => {
       setTotalProducts(response.data.pagination.totalProducts);
       setProducts(response.data.data);
     } catch (error) {
-      console.log("Error while fetching product:", error.response);
+      console.log("Error while fetching product:", error.response?.data);
       let message;
       if (!error.response) {
         message = error.message;

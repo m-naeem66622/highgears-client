@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Text from "../components/Text";
 import {
   Table,
@@ -7,7 +7,6 @@ import {
   TableColumn,
   TableRow,
   TableCell,
-  getKeyValue,
   Avatar,
   Link as NextUI_Link,
 } from "@nextui-org/react";
@@ -18,7 +17,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { removeFromCart, setCart } from "../slices/cartSlice";
 import axios from "axios";
 import { ORDERS_URL } from "../constants";
-import { formatPhoneNumber } from "../utils/strings";
+import { formatPhoneNumber, toTitleCase } from "../utils/strings";
+import { notify } from "../utils/notify";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -117,6 +117,20 @@ const Cart = () => {
       );
       navigate("/checkout");
     } catch (error) {
+      console.log("Error while checking out:", error.response?.data);
+      let message = "Oops! Something went wrong";
+
+      // Check if the error is not from the server
+      if (!error.response) message = error.message;
+      else if (error.response.status !== 400)
+        message = toTitleCase(error.response?.data?.error?.message);
+
+      if (error.response.status === 400) {
+        message = error.response?.data.message;
+      }
+
+      notify("error", message);
+    }
     setRolling(false);
   };
 

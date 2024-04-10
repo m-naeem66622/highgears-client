@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import AdvanceFilter from "../components/AdvanceFilter";
 import Text from "../components/Text";
@@ -65,7 +65,7 @@ const CollectionList = () => {
       setProducts(response.data.data.products);
       setError(null);
     } catch (error) {
-      console.log("fetchCollection -> error", error);
+      console.log("Error while fetching collections:", error.response?.data);
 
       let errorObj = {};
       if (!error.response) {

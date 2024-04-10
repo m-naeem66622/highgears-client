@@ -1,11 +1,4 @@
-import {
-  Button,
-  CheckboxGroup,
-  Select,
-  SelectItem,
-  Slider,
-} from "@nextui-org/react";
-import React, { useEffect, useState } from "react";
+import { CheckboxGroup, Select, SelectItem, Slider } from "@nextui-org/react";
 import { CustomCheckbox } from "./CustomCheckbox";
 import { colors, priceRange, sizes } from "../staticData";
 import { CustomButton } from "./CustomButton";

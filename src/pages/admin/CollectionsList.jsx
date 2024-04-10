@@ -14,7 +14,6 @@ import {
   DropdownItem,
   Chip,
   Pagination,
-  Image,
   useDisclosure,
 } from "@nextui-org/react";
 import { PlusIcon } from "../../assets/PlusIcon";
@@ -120,12 +119,12 @@ const CollectionsList = () => {
           resolve(); // Resolve the promise if the deletion was successful
         })
         .catch((error) => {
+          console.log("Error while deleting collection:", error.response?.data);
           let message;
 
           if (!error.response) message = error.message;
           else message = toTitleCase(error.response?.data?.error?.message);
 
-          console.log("Error:", error.response?.data);
           notify("error", message);
           setRolling(false);
           reject(error); // Reject the promise if the deletion failed
@@ -159,7 +158,7 @@ const CollectionsList = () => {
       setTotalCollections(response.data.pagination.totalCollections);
       setCollections(response.data.data);
     } catch (error) {
-      console.log("Error while fetching collection:", error.response);
+      console.log("Error while fetching collection:", error.response?.data);
       let message;
       if (!error.response) {
         message = error.message;

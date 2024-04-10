@@ -87,6 +87,7 @@ function Register() {
       navigate("/");
       notify("success", "You have successfully signed in!");
     } catch (error) {
+      console.log("Error while registering user:", error.response?.data);
       let message = "Oops! Something went wrong";
 
       // Check if the error is not from the server
@@ -102,7 +103,6 @@ function Register() {
         message = error.response?.data.message;
       }
 
-      console.log("Error:", error.response?.data);
       notify("error", message);
     }
     setRolling(false);
@@ -110,7 +110,6 @@ function Register() {
 
   useEffect(() => {
     axios.get("https://freeipapi.com/api/json").then((res) => {
-      console.log("Data:", res.data);
       setIpData(res.data);
     });
   }, []);

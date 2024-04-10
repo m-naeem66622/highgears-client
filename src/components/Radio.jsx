@@ -1,18 +1,15 @@
-import React from "react";
 import { CustomRadio } from "./CustomRadio";
 import { RadioGroup } from "@nextui-org/react";
 import { Controller } from "react-hook-form";
 
 const Radio = ({
   name = "",
-  placeholder = "",
   label = "",
   orientation = "horizontal",
   items = [],
   isRequired = false,
   defaultValue = false,
   className = "",
-  classNames = {},
   control,
   rules,
   error = "",

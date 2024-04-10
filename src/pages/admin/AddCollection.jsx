@@ -9,21 +9,13 @@ import Input from "../../components/Input";
 import Textarea from "../../components/Textarea";
 import Radio from "../../components/Radio";
 import { CustomButton } from "../../components/CustomButton";
-import {
-  Input as NextUI_Input,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Chip,
-} from "@nextui-org/react";
+import { Card, CardBody, Chip } from "@nextui-org/react";
 
 function AddCollection() {
   const navigate = useNavigate();
   const [rolling, setRolling] = useState(false);
   const query = new URLSearchParams(window.location.search);
   const {
-    register,
     handleSubmit,
     control,
     formState: { errors },
@@ -45,8 +37,8 @@ function AddCollection() {
   });
 
   const watchSrc = watch("name");
-  const watchProducts = watch("products");
   const watchProduct = watch("product");
+  watch("products");
 
   const getFormattedData = (data) => {
     const formattedData = {
@@ -62,15 +54,20 @@ function AddCollection() {
   const onSubmitHandle = async (data) => {
     setRolling(true);
     try {
-      const response = await axios.post(`${COLLECTIONS_URL}`, getFormattedData(data), {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-        },
-      });
+      const response = await axios.post(
+        `${COLLECTIONS_URL}`,
+        getFormattedData(data),
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
       reset();
       navigate(query.get("redirect") || "/admin/collections");
       notify("success", response.data.message);
     } catch (error) {
+      console.log("Error while adding collection:", error.response?.data);
       let message = "Oops! Something went wrong";
 
       // Check if the error is not from the server
@@ -86,7 +83,6 @@ function AddCollection() {
         }
       }
 
-      console.log("Error:", error.response?.data);
       notify("error", message);
     }
     setRolling(false);
@@ -126,6 +122,7 @@ function AddCollection() {
       setValue("product", "");
       notify("success", "Product added successfully");
     } catch (error) {
+      console.log("Error while fetching product:", error.response?.data);
       const { response } = error;
       let message = "";
       if (!response) message = error.message;
@@ -148,7 +145,6 @@ function AddCollection() {
           message: response.data.error.message,
         });
       }
-      console.log("Error:", error.response?.data);
       notify("error", message);
     }
   };

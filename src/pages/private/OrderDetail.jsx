@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ORDERS_URL } from "../../constants";
-import { Card, Chip, Divider, Image, Spinner } from "@nextui-org/react";
+import { Chip, Image, Spinner } from "@nextui-org/react";
 import { notify } from "../../utils/notify";
 import axios from "axios";
 import { formatPhoneNumber } from "../../utils/strings";
@@ -14,15 +14,6 @@ const statusColorMap = {
   SHIPPED: "primary",
   COMPLETED: "success",
 };
-
-const orderStatuses = [
-  { label: "All", value: "" },
-  { label: "Pending", value: "PENDING" },
-  { label: "Processing", value: "PROCESSING" },
-  { label: "Shipped", value: "SHIPPED" },
-  { label: "Completed", value: "COMPLETED" },
-  { label: "Cancelled", value: "CANCELLED" },
-];
 
 const OrderDetail = () => {
   const { id } = useParams();
@@ -40,7 +31,7 @@ const OrderDetail = () => {
       setOrder(response.data.data);
       setLoading(false);
     } catch (error) {
-      console.log("Error while fetching order:", error);
+      console.log("Error while fetching order:", error.response?.data);
       let errorObj = {};
       if (!error.response) {
         errorObj = { message: error.message, code: error.code };

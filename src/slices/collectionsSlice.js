@@ -9,7 +9,6 @@ const collectionsSlice = createSlice({
   initialState,
   reducers: {
     setCollections: (state, action) => {
-      // eslint-disable-next-line no-unused-vars
       state = action.payload;
       sessionStorage.setItem("collectionData", JSON.stringify(state));
       return state;

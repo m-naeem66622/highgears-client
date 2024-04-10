@@ -1,5 +1,4 @@
-import React, { useRef } from "react";
-import { Controller, useController } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import PhoneInput from "react-phone-input-2";
 
 const InputPhoneNumber = (props) => {
@@ -11,7 +10,6 @@ const InputPhoneNumber = (props) => {
     setValue,
     control,
     isRequired = false,
-    rules = {},
     error,
   } = props;
 
@@ -35,7 +33,7 @@ const InputPhoneNumber = (props) => {
           <label className={isRequiredStyle}>{label}</label>
           <PhoneInput
             {...field}
-            onChange={(value, country, e, formattedValue) =>
+            onChange={(value, country) =>
               setValue("phoneNumber", {
                 countryCode: country.countryCode,
                 dialCode: country.dialCode,

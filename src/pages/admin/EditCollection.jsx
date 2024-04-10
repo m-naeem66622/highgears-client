@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import axios from "axios";
 import { notify } from "../../utils/notify";
 import { slugify, toTitleCase } from "../../utils/strings";
@@ -10,15 +9,7 @@ import Input from "../../components/Input";
 import Textarea from "../../components/Textarea";
 import Radio from "../../components/Radio";
 import { CustomButton } from "../../components/CustomButton";
-import {
-  Input as NextUI_Input,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Chip,
-  Spinner,
-} from "@nextui-org/react";
+import { Card, CardBody, Chip, Spinner } from "@nextui-org/react";
 
 function EditCollection() {
   const navigate = useNavigate();
@@ -49,8 +40,8 @@ function EditCollection() {
   });
 
   const watchSrc = watch("name");
-  const watchProducts = watch("products");
   const watchProduct = watch("product");
+  watch("products");
 
   const getFormattedData = (data) => {
     const formattedData = {
@@ -79,6 +70,7 @@ function EditCollection() {
       navigate(query.get("redirect") || "/admin/collections");
       notify("success", response.data.message);
     } catch (error) {
+      console.log("Error while updating collection:", error.response?.data);
       let message = "Oops! Something went wrong";
 
       // Check if the error is not from the server
@@ -94,7 +86,6 @@ function EditCollection() {
         }
       }
 
-      console.log("Error:", error.response?.data);
       notify("error", message);
     }
     setRolling(false);
@@ -134,6 +125,7 @@ function EditCollection() {
       setValue("product", "");
       notify("success", "Product added successfully");
     } catch (error) {
+      console.log("Error while fetching product:", error.response?.data);
       const { response } = error;
       let message = "";
       if (!response) message = error.message;
@@ -156,7 +148,7 @@ function EditCollection() {
           message: response.data.error.message,
         });
       }
-      console.log("Error:", error.response?.data);
+
       notify("error", message);
     }
   };
@@ -172,7 +164,7 @@ function EditCollection() {
         }
       }
     } catch (error) {
-      console.log("Error while fetching collection:", error);
+      console.log("Error while fetching collection:", error.response?.data);
       let errorObj = {};
       if (!error.response) {
         errorObj = { message: error.message, code: error.code };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Controller } from "react-hook-form";
 import ReactCreatableSelect from "react-select/creatable";
 import makeAnimated from "react-select/animated";
@@ -8,7 +8,6 @@ const CreatableSelect = ({
   placeholder = "Type something and press enter or tab...",
   label = "",
   className = "",
-  classNames = {},
   isRequired = false,
   control,
   rules,
@@ -16,18 +15,12 @@ const CreatableSelect = ({
 }) => {
   const animatedComponents = makeAnimated();
   const [inputValue, setInputValue] = useState("");
-  const [isInvalid, setIsInvalid] = useState(false);
 
   const isRequiredStyle = isRequired
     ? `${
         error ? "text-danger" : ""
       } after:content-['*'] after:text-danger after:ml-0.5`
     : `${error ? "text-danger" : ""}`;
-
-  let errorString = "";
-  for (const key in error) {
-    errorString += error[key].message + " ";
-  }
 
   const handleKeyDown = (event, field) => {
     if (!inputValue) return;

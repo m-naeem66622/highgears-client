@@ -1,5 +1,3 @@
-import React from "react";
-
 const Text = ({ as = "", className = "", children }) => {
   const Component = as || "p";
 

@@ -9,6 +9,7 @@ import { setCredentials } from "../slices/authSlice";
 import { AUTH_URL } from "../constants";
 import Input from "../components/Input";
 import { CustomButton } from "../components/CustomButton";
+import { useState } from "react";
 
 function Login() {
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ function Login() {
       else navigate(query.get("redirect") || "/");
       notify("success", "You have successfully signed in!");
     } catch (error) {
-      console.log("Error:", error);
+      console.log("Error while login:", error.response?.data);
       let notifyMsg = {
         type: "error",
         message: "Oops! Something went wrong...",

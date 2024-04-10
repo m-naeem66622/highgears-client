@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { BASE_URL, ORDERS_URL } from "../../constants";
 import {
   Button,
@@ -76,7 +76,7 @@ const OrdersList = () => {
       setOrders(response.data.data);
       setPagination(response.data.pagination);
     } catch (error) {
-      console.log("Error while fetching orders:", error);
+      console.log("Error while fetching orders:", error.response?.data);
       setPagination({
         limit: pagination.limit,
         currentPage: 1,
@@ -258,7 +258,7 @@ const OrdersList = () => {
           </div>
           <div className="grid grid-cols-1 gap-4">
             {order.products.map((item) => (
-              <div className="flex gap-x-4 items-start">
+              <div key={item.product._id} className="flex gap-x-4 items-start">
                 <Link to={`/products/${item.product._id}`}>
                   <Image
                     className="w-20"

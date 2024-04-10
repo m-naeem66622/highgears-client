@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import { forwardRef } from "react";
 import { useRadio, Chip, VisuallyHidden, tv } from "@nextui-org/react";
 
 const radio = tv({
@@ -29,7 +29,6 @@ export const CustomRadio = forwardRef((props, ref) => {
     getBaseProps,
     getLabelProps,
     getInputProps,
-    isInvalid,
   } = useRadio({
     ...props,
     ref: ref,
@@ -54,6 +53,5 @@ export const CustomRadio = forwardRef((props, ref) => {
         {children ? children : isSelected ? "Enabled" : "Disabled"}
       </Chip>
     </label>
-
   );
 });

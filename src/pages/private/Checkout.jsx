@@ -1,23 +1,23 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CustomButton } from "../../components/CustomButton";
 import Text from "../../components/Text";
-import { Avatar , Spinner } from "@nextui-org/react";
+import { Avatar, Spinner } from "@nextui-org/react";
 import { notify } from "../../utils/notify";
 import Page404 from "../Page404";
 import axios from "axios";
-import { ORDERS_URL } from "../../constants";
+import { BASE_URL, ORDERS_URL } from "../../constants";
 import { resetCart } from "../../slices/cartSlice";
+import { toTitleCase } from "../../utils/strings";
 
 const Checkout = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const [rolling, setRolling] = useState(false);
   const cart = useSelector((state) => state.cart);
   const userInfo = useSelector((state) => state.auth.userInfo);
 
   const handleCheckout = async (form) => {
-    console.log("Cart Items: ", cart.cartItems);
-    console.log("User Info: ", userInfo);
     if (!cart.cartItems.length) return;
     setRolling(true);
     try {
@@ -54,6 +54,20 @@ const Checkout = () => {
 
       form.submit();
     } catch (error) {
+      console.log("Error while adding order:", error.response?.data);
+      let message = "Oops! Something went wrong";
+
+      // Check if the error is not from the server
+      if (!error.response) message = error.message;
+      else if (error.response.status !== 400)
+        message = toTitleCase(error.response?.data.error.message);
+
+      if (error.response.status === 400) {
+        message = error.response?.data.message;
+      }
+
+      notify("error", message);
+    }
     setRolling(false);
   };
 

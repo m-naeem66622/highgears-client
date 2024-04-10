@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Text from "../components/Text";
 import ProductCard from "../components/ProductCard";
 import { Link } from "react-router-dom";
@@ -23,7 +23,7 @@ const Home = () => {
       );
       dispatch(setCollections(response.data));
     } catch (error) {
-      console.log("fetchCollections -> error", error);
+      console.log("Error while fetching collections:", error.response?.data);
 
       let errorObj = {};
       if (!error.response) {

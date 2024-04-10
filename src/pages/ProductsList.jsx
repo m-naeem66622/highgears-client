@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
-import AdvanceFilter from "../components/AdvanceFilter";
 import Text from "../components/Text";
-import { priceRange } from "../staticData";
 import { Spinner } from "@nextui-org/react";
 import axios from "axios";
 import { PRODUCTS_URL } from "../constants";
@@ -34,7 +32,7 @@ const ProductsList = () => {
         dispatch(addProducts(response.data));
       }
     } catch (error) {
-      console.log("fetchProducts -> error", error);
+      console.log("Error while fetching products:", error.response?.data);
 
       let errorObj = {};
       if (!error.response) {

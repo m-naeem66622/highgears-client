@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { notify } from "../../utils/notify";
 import { toTitleCase } from "../../utils/strings";
-import { setCredentials } from "../../slices/authSlice";
 import { BASE_URL, PRODUCTS_URL } from "../../constants";
-import { Badge, Button, Image, RadioGroup, Spinner } from "@nextui-org/react";
+import { Badge, Image, Spinner } from "@nextui-org/react";
 import Input from "../../components/Input";
 import Select from "../../components/Select";
 import { sizes } from "../../staticData";
@@ -44,7 +42,6 @@ function EditProduct() {
     handleSubmit,
     control,
     formState: { errors },
-    reset,
     setValue,
     getValues,
     watch,
@@ -90,6 +87,7 @@ function EditProduct() {
       navigate(query.get("redirect") || "/admin/products");
       notify("success", response.data.message);
     } catch (error) {
+      console.log("Error while updating product:", error.response?.data);
       let message = "Oops! Something went wrong";
 
       // Check if the error is not from the server
@@ -98,13 +96,13 @@ function EditProduct() {
         message = toTitleCase(error.response?.data.error.message);
 
       if (error.response.status === 400) {
-        for (const key in error.response?.data.error) {
-          const value = error.response?.data.error[key];
+        for (const key in error.response?.data.errors) {
+          message = error.response.data.message;
+          const value = error.response?.data.errors[key];
           setErrors(key, { type: "manual", message: value });
         }
       }
 
-      console.log("Error:", error.response?.data);
       notify("error", message);
     }
     setRolling(false);
@@ -126,7 +124,7 @@ function EditProduct() {
       }
       setLoading(false);
     } catch (error) {
-      console.log("Error while fetching product:", error);
+      console.log("Error while fetching product:", error.response?.data);
       let errorObj = {};
       if (!error.response) {
         errorObj = { message: error.message, code: error.code };

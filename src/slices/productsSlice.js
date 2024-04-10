@@ -9,9 +9,8 @@ const productsSlice = createSlice({
   initialState,
   reducers: {
     setProducts: (state, action) => {
-      // eslint-disable-next-line no-unused-vars
       state = action.payload;
-      state.pagination.currentPage =  initialState.pagination.currentPage + 1;
+      state.pagination.currentPage = initialState.pagination.currentPage + 1;
       sessionStorage.setItem("productData", JSON.stringify(state));
       return state;
     },
