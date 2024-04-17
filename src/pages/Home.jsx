@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Text from "../components/Text";
-import ProductCard from "../components/ProductCard";
 import { Link } from "react-router-dom";
 import { CustomButton } from "../components/CustomButton";
 import { COLLECTIONS_URL } from "../constants";
@@ -9,6 +8,7 @@ import axios from "axios";
 import { setCollections } from "../slices/collectionsSlice";
 import { Spinner } from "@nextui-org/react";
 import { notify } from "../utils/notify";
+import Carousel from "../components/ProductCarousel";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -44,6 +44,7 @@ const Home = () => {
 
   useEffect(() => {
     fetchCollections();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading) {
@@ -83,11 +84,12 @@ const Home = () => {
                 View More
               </CustomButton>
             </div>
-            <div className="flex gap-x-4 overflow-auto p-4">
+            <Carousel data={collection.products.slice(0, 10)} />
+            {/* <div className="flex gap-x-4 overflow-auto p-4">
               {collection.products.slice(0, 6).map((product) => (
                 <ProductCard key={product._id} data={product} />
               ))}
-            </div>
+            </div> */}
           </section>
         ))}
     </>

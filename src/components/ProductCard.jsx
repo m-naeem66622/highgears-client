@@ -1,22 +1,26 @@
 import { Card, CardHeader, CardBody, Image } from "@nextui-org/react";
 import { Link } from "react-router-dom";
 import { BASE_URL } from "../constants";
+import propTypes from "prop-types";
 
-const ProductCard = ({ data }) => {
+const ProductCard = ({ data, rounded = true }) => {
   return (
     <Link to={`/products/${data._id}`}>
-      <Card className="py-4 w-72 h-full">
-        <CardHeader className="overflow-visible py-0">
+      <Card
+        radius={rounded ? "md" : "none"}
+        className={`py-4 h-full ${rounded ? "w-72" : "w-full"}`}
+      >
+        <CardHeader className="overflow-visible py-0 justify-center">
           <Image
             alt="Card background"
-            className="object-cover rounded-xl min-h-64 min-w-64"
+            className={`object-cover min-h-64 min-w-64`}
+            radius={rounded ? "md" : "none"}
             src={
               data.images[0].startsWith("https:") ||
               data.images[0].startsWith("http:")
                 ? data.images[0]
                 : `${BASE_URL}/api/v1/${data.images[0]}`
             }
-            fallbackSrc="https://via.placeholder.com/264"
             classNames={{ wrapper: "this-is-wrapper-class bg-no-repeat" }}
             width={264}
           />
@@ -37,6 +41,11 @@ const ProductCard = ({ data }) => {
       </Card>
     </Link>
   );
+};
+
+ProductCard.propTypes = {
+  data: propTypes.object,
+  rounded: propTypes.bool,
 };
 
 export default ProductCard;

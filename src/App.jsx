@@ -6,6 +6,7 @@ import { ToastContainer } from "react-toastify";
 import { adminRoutes, privateRoutes, publicRoutes } from "./Routes";
 import AdminRoute from "./components/AdminRoute";
 import PrivateRoute from "./components/PrivateRoutes";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           </Route>
         </Routes>
       </div>
+      <Footer />
     </>
   );
 }
