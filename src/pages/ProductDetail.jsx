@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { addToCart, removeFromCart } from "../slices/cartSlice";
 import { notify } from "../utils/notify";
-import { reviews, sizes } from "../staticData";
+import { sizes } from "../staticData";
 import Text from "../components/Text";
 import {
   ButtonGroup,
@@ -48,6 +48,8 @@ const ProductDetail = () => {
   const fetchProduct = async () => {
     try {
       const response = await axios.get(`${PRODUCTS_URL}/${_id}`);
+      console.log("Product fetched:", response.data.data);
+      document.title = `Buy ${response.data.data.name} | Grand Online Store`;
       setData(response.data.data);
     } catch (error) {
       console.log("Error while fetching product:", error.response?.data);
@@ -55,7 +57,7 @@ const ProductDetail = () => {
       if (!error.response) {
         errorObj = { message: error.message, code: error.code };
       } else {
-        errorObj = { ...error.response.data, code: error.response.status };
+        errorObj = { ...error.response.data.error, code: error.response.status };
       }
       setError(errorObj);
       setLoading(false);
@@ -78,7 +80,12 @@ const ProductDetail = () => {
 
   useEffect(() => {
     fetchProduct();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [_id]);
+
+  useEffect(() => {
+    document.title = "Product Detail | Grand Online Store";
+  }, []);
 
   if (loading) {
     return (
@@ -89,6 +96,7 @@ const ProductDetail = () => {
   }
 
   if (error) {
+    document.title = `${error.code} Error - ${error.message} | Grand Online Store`;
     return (
       <div className="text-center">
         <h2 className="text-2xl font-semibold text-red-500 mb-4">
@@ -291,53 +299,11 @@ const ProductDetail = () => {
       </div>
 
       <div className="text-center mt-8">
-        <Tabs
-          aria-label="Description & Reviews Tabs"
-          radius="none"
-          variant="underlined"
-        >
+        <Tabs aria-label="Description Tab" radius="none" variant="underlined">
           <Tab key="description" title="Description">
             <Card radius="none">
               <CardBody>{data.description}</CardBody>
             </Card>
-          </Tab>
-          <Tab key="reviews" title="Reviews">
-            {reviews.map((review) => (
-              <Card key={review.id} radius="none" className="mb-4">
-                <CardBody>
-                  <div className="flex items-center mb-2">
-                    <div className="flex-shrink-0">
-                      <img
-                        src={`https://gravatar.com/avatar?s=200&d=mp`}
-                        alt={review.author}
-                        className="w-10 h-10 rounded-full"
-                      />
-                    </div>
-                    <div className="ml-3">
-                      <h3 className="text-lg font-medium">{review.author}</h3>
-                      <div className="flex items-center">
-                        <span className="flex">
-                          {Array.from({ length: 5 }).map((_, index) => (
-                            <i
-                              key={index}
-                              className={`fa fa-star ${
-                                index < review.rating
-                                  ? "text-yellow-500"
-                                  : "text-gray-400"
-                              }`}
-                            ></i>
-                          ))}
-                        </span>
-                        <span className="ml-1 text-gray-600">
-                          {review.rating} out of 5
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <p className="text-gray-800">{review.comment}</p>
-                </CardBody>
-              </Card>
-            ))}
           </Tab>
         </Tabs>
       </div>

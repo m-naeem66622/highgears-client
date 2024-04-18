@@ -37,6 +37,7 @@ const orderStatuses = [
 ];
 
 const OrdersList = () => {
+  document.title = "My Orders | Grand Online Store";
   const [pagination, setPagination] = useState({
     currentPage: 1,
     limit: 5,

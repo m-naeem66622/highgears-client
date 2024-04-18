@@ -19,7 +19,6 @@ export const productColumns = [
   { name: "CURRENCY", uid: "currency", sortable: true },
   { name: "SELLING PRICE", uid: "selling_price", sortable: true },
   { name: "ORIGINAL PRICE", uid: "original_price", sortable: true },
-  { name: "REVIEWS COUNT", uid: "reviews_count", sortable: true },
   { name: "BRAND", uid: "brand", sortable: true },
   { name: "SHIPPING PRICE", uid: "shipping_price", sortable: true },
   { name: "AVAILABILITY", uid: "in_stock", sortable: true },
@@ -53,8 +52,6 @@ export const orderColumns = [
   { name: "AMOUNT", uid: "totalPrice", sortable: true },
   { name: "PLACED AT", uid: "placedAt", sortable: true },
   { name: "ORDER STATUS", uid: "orderStatus", sortable: true },
-  { name: "PAYMENT METHOD", uid: "paymentMethod", sortable: true },
-  { name: "PAYMENT STATUS", uid: "paymentStatus", sortable: true },
   { name: "ACTIONS", uid: "actions" },
 ];
 

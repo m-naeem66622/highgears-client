@@ -18,6 +18,7 @@ import InputPhoneNumber from "../components/InputPhoneNumber";
 import { CustomButton } from "../components/CustomButton";
 
 function Register() {
+  document.title = "Register | Grand Online Store";
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [rolling, setRolling] = useState(false);

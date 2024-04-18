@@ -19,6 +19,7 @@ import ConfirmationModal from "../ConfirmationModal";
 import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
+  document.title = "My Profile | Grand Online Store";
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -163,6 +164,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (mode === "read") reset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode]);
 
   return (

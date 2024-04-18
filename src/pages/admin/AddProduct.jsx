@@ -16,6 +16,7 @@ import CustomInputFile from "../../components/CustomInputFile";
 import { CustomButton } from "../../components/CustomButton";
 
 function AddProduct() {
+  document.title = "Admin | Add Product | Grand Online Store";
   const navigate = useNavigate();
   const query = new URLSearchParams(window.location.search);
   const [rolling, setRolling] = useState(false);
@@ -107,6 +108,7 @@ function AddProduct() {
 
   useEffect(() => {
     clearErrors("images");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watchSrc]);
 
   return (

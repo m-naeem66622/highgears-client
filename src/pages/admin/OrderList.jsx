@@ -29,6 +29,7 @@ import { CustomButton } from "../../components/CustomButton";
 import { Link } from "react-router-dom";
 import { notify } from "../../utils/notify";
 import axios from "axios";
+import propTypes from "prop-types";
 
 const statusColorMap = {
   CANCELLED: "danger",
@@ -48,7 +49,7 @@ const INITIAL_VISIBLE_COLUMNS = [
 ];
 
 const OrderList = () => {
-  const [filterValue, setFilterValue] = React.useState("");
+  document.title = "Admin | Manage Orders | Grand Online Store";
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
   const [visibleColumns, setVisibleColumns] = React.useState(
     new Set(INITIAL_VISIBLE_COLUMNS)
@@ -82,6 +83,7 @@ const OrderList = () => {
     }
 
     return filteredOrders;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orders, filterValue]);
 
   const [pages, setPages] = React.useState(
@@ -139,6 +141,7 @@ const OrderList = () => {
 
   useEffect(() => {
     fetchOrders();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, visibleColumns, limit]);
 
   const renderCell = React.useCallback((order, columnKey) => {
@@ -204,6 +207,7 @@ const OrderList = () => {
       default:
         return cellValue;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onLimitChange = React.useCallback((e) => {
@@ -288,6 +292,7 @@ const OrderList = () => {
         </div>
       </div>
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     filterValue,
     visibleColumns,
@@ -323,6 +328,7 @@ const OrderList = () => {
         </div>
       </div>
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedKeys, orders.length, page, pages, hasSearchFilter]);
 
   return (
@@ -369,6 +375,10 @@ const OrderList = () => {
       </Table>
     </>
   );
+};
+
+OrderList.propTypes = {
+  status: propTypes.string,
 };
 
 export default OrderList;

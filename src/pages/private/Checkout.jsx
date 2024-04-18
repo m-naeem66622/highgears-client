@@ -11,6 +11,7 @@ import { resetCart } from "../../slices/cartSlice";
 import { toTitleCase } from "../../utils/strings";
 
 const Checkout = () => {
+  document.title = "Checkout | Grand Online Store";
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [rolling, setRolling] = useState(false);
@@ -201,9 +202,9 @@ const Checkout = () => {
                 )
               )}
               <Text className="text-blue-600 text-sm">
-                Please note: When you click "Place Order", your order will be
-                placed and you will then be redirected to the payment page to
-                complete your purchase.
+                Please note: When you click &quot;Place Order&quot;, your order
+                will be placed and you will then be redirected to the payment
+                page to complete your purchase.
               </Text>
               <CustomButton
                 // onClick={handleCheckout}

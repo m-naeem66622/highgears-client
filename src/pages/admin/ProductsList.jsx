@@ -41,6 +41,7 @@ const INITIAL_VISIBLE_COLUMNS = [
 ];
 
 const ProductList = () => {
+  document.title = "Admin | Manage Products | Grand Online Store";
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [rolling, setRolling] = React.useState(false);
   const [filterValue, setFilterValue] = React.useState("");
@@ -78,6 +79,7 @@ const ProductList = () => {
     }
 
     return filteredProducts;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [products, filterValue]);
 
   const [pages, setPages] = React.useState(
@@ -177,6 +179,7 @@ const ProductList = () => {
 
   useEffect(() => {
     fetchProducts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, visibleColumns, limit]);
 
   const renderCell = React.useCallback((product, columnKey) => {
@@ -248,6 +251,7 @@ const ProductList = () => {
       default:
         return cellValue;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const onRowsPerPageChange = React.useCallback((e) => {
     setLimit(Number(e.target.value));
@@ -340,6 +344,8 @@ const ProductList = () => {
         </div>
       </div>
     );
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     filterValue,
     visibleColumns,
@@ -375,6 +381,7 @@ const ProductList = () => {
         </div>
       </div>
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedKeys, products.length, page, pages, hasSearchFilter]);
 
   return (

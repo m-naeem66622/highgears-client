@@ -21,6 +21,7 @@ import { formatPhoneNumber, toTitleCase } from "../utils/strings";
 import { notify } from "../utils/notify";
 
 const Cart = () => {
+  document.title = "My Cart | Grand Online Store"
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [rolling, setRolling] = useState(false);
@@ -66,6 +67,7 @@ const Cart = () => {
       default:
         return cellValue;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleCheckout = async () => {

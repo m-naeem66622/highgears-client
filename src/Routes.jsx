@@ -4,7 +4,6 @@ import Login from "./pages/Login";
 import UserProductsList from "./pages/ProductsList";
 import UserCollectionList from "./pages/CollectionList";
 import Register from "./pages/Register";
-import ComingSoon from "./pages/ComingSoon";
 import ProductDetail from "./pages/ProductDetail";
 import AddProduct from "./pages/admin/AddProduct";
 import AdminProductList from "./pages/admin/ProductsList";

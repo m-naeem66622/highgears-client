@@ -11,6 +11,7 @@ import { notify } from "../utils/notify";
 import Carousel from "../components/ProductCarousel";
 
 const Home = () => {
+  document.title = "Home | Grand Online Store - Spend less, Save more"
   const dispatch = useDispatch();
   const collections = useSelector((state) => state.collections);
   const [loading, setLoading] = useState(true);

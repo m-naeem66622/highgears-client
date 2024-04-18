@@ -9,6 +9,7 @@ import PrivateRoute from "./components/PrivateRoutes";
 import Footer from "./components/Footer";
 
 function App() {
+  document.title = "Grand Online Store | Spend less, Save more";
   return (
     <>
       <ToastContainer position="top-right" autoClose={2500} theme="light" />

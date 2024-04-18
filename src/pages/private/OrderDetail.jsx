@@ -29,6 +29,7 @@ const OrderDetail = () => {
         },
       });
       setOrder(response.data.data);
+      document.title = `Order Details | ${response.data.data._id} | Grand Online Store`;
       setLoading(false);
     } catch (error) {
       console.log("Error while fetching order:", error.response?.data);
@@ -36,7 +37,7 @@ const OrderDetail = () => {
       if (!error.response) {
         errorObj = { message: error.message, code: error.code };
       } else {
-        errorObj = { ...error.response.data, code: error.response.status };
+        errorObj = { ...error.response.data.error, code: error.response.status };
       }
       setError(errorObj);
       notify("error", "Error while fetching order");
@@ -46,7 +47,12 @@ const OrderDetail = () => {
 
   useEffect(() => {
     fetchOrder();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+
+  useEffect(() => {
+    document.title = "Order Details | Grand Online Store";
+  }, []);
 
   if (loading) {
     return (
@@ -57,6 +63,7 @@ const OrderDetail = () => {
   }
 
   if (error) {
+    document.title = `${error.code} Error - ${error.message} | Grand Online Store`;
     return (
       <div className="text-center">
         <h2 className="text-2xl font-semibold text-red-500 mb-4">

@@ -12,6 +12,7 @@ import { CustomButton } from "../../components/CustomButton";
 import { Card, CardBody, Chip } from "@nextui-org/react";
 
 function AddCollection() {
+  document.title = "Admin | Add Collection | Grand Online Store";
   const navigate = useNavigate();
   const [rolling, setRolling] = useState(false);
   const query = new URLSearchParams(window.location.search);
@@ -155,6 +156,7 @@ function AddCollection() {
       const slug = slugify(watchSrc);
       setValue("slug", slug);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watchSrc]);
 
   useEffect(() => {
@@ -163,6 +165,7 @@ function AddCollection() {
       if (error) setError("product", { type: "manual", message: error });
       else clearErrors("product");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watchProduct]);
 
   return (

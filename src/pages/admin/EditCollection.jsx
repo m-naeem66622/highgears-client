@@ -158,6 +158,7 @@ function EditCollection() {
       const response = await axios.get(
         `${COLLECTIONS_URL}/${slug}?queryType=list`
       );
+      document.title = `Admin | Edit Collection - ${response.data.data.name} | Grand Online Store`;
       for (const key in response.data.data) {
         if (!["_id", "createdAt", "updatedAt", "__v", "_id"].includes(key)) {
           setValue(key, response.data.data[key]);
@@ -169,7 +170,7 @@ function EditCollection() {
       if (!error.response) {
         errorObj = { message: error.message, code: error.code };
       }
-      errorObj = { ...error.response.data, code: error.response.status };
+      errorObj = { ...error.response.data.error, code: error.response.status };
       setError(errorObj);
       notify("error", "Error while fetching collection");
     }
@@ -182,6 +183,7 @@ function EditCollection() {
       const slug = slugify(watchSrc);
       setValue("slug", slug);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watchSrc]);
 
   useEffect(() => {
@@ -190,11 +192,17 @@ function EditCollection() {
       if (error) setErrors("product", { type: "manual", message: error });
       else clearErrors("product");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watchProduct]);
 
   useEffect(() => {
     fetchCollection();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
+
+  useEffect(() => {
+    document.title = "Admin | Edit Collection | Grand Online Store";
+  }, []);
 
   if (loading) {
     return (
@@ -205,6 +213,7 @@ function EditCollection() {
   }
 
   if (error) {
+    document.title = `${error.code} Error - ${error.message} | Grand Online Store`;
     return (
       <div className="text-center">
         <h2 className="text-2xl font-semibold text-red-500 mb-4">

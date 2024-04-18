@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { CartIcon } from "../assets/CartIcon";
@@ -216,15 +216,6 @@ const Header = () => {
                   My Orders
                 </DropdownItem>
                 <DropdownItem
-                  key="reviews"
-                  textValue="My Reviews"
-                  className="rounded-none text-neutral-600"
-                  to="/user/account?tab=reviews"
-                  as={Link}
-                >
-                  My Reviews
-                </DropdownItem>
-                <DropdownItem
                   key="logout"
                   color="danger"
                   textValue="Log Out"
@@ -382,15 +373,6 @@ const Header = () => {
                   as={Link}
                 >
                   My Orders
-                </DropdownItem>
-                <DropdownItem
-                  key="reviews"
-                  textValue="My Reviews"
-                  className="rounded-none text-neutral-600"
-                  to="/admin/account?tab=reviews"
-                  as={Link}
-                >
-                  My Reviews
                 </DropdownItem>
                 <DropdownItem
                   key="logout"

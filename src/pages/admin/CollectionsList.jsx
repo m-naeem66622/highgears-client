@@ -40,6 +40,7 @@ const INITIAL_VISIBLE_COLUMNS = [
 ];
 
 const CollectionsList = () => {
+  document.title = "Admin | Manage Collections | Grand Online Store";
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [rolling, setRolling] = React.useState(false);
   const [filterValue, setFilterValue] = React.useState("");
@@ -77,6 +78,7 @@ const CollectionsList = () => {
     }
 
     return filteredCollections;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [collections, filterValue]);
 
   const [pages, setPages] = React.useState(
@@ -172,6 +174,7 @@ const CollectionsList = () => {
 
   useEffect(() => {
     fetchCollections();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, visibleColumns, limit]);
 
   const renderCell = React.useCallback((collection, columnKey) => {
@@ -244,6 +247,7 @@ const CollectionsList = () => {
       default:
         return cellValue;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onLimitChange = React.useCallback((e) => {
@@ -337,6 +341,7 @@ const CollectionsList = () => {
         </div>
       </div>
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     filterValue,
     visibleColumns,
@@ -372,6 +377,7 @@ const CollectionsList = () => {
         </div>
       </div>
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedKeys, collections.length, page, pages, hasSearchFilter]);
 
   return (

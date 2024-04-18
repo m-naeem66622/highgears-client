@@ -10,6 +10,7 @@ import { notify } from "../utils/notify";
 import { CustomButton } from "../components/CustomButton";
 
 const ProductsList = () => {
+  document.title = "All Products | Grand Online Store";
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [rolling, setRolling] = useState(false);
@@ -56,6 +57,7 @@ const ProductsList = () => {
   useEffect(() => {
     if (!products.data.length) fetchProducts(true);
     setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading) {

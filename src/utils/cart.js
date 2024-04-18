@@ -20,6 +20,8 @@ export const updateCart = (state) => {
     }, 0) / itemsCountWithShipping;
   state.shippingPrice = addDecimals(shippingPrice);
 
+  // Calculate the discounted price
+  // Calculate the difference of selling and original price of all products
   const discountedPrice = state.cartItems.reduce(
     (acc, item) =>
       acc + (item.original_price - item.selling_price) * item.quantity,

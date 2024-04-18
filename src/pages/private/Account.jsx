@@ -5,7 +5,6 @@ import { Tabs, Tab } from "@nextui-org/react";
 import { useSearchParams } from "react-router-dom";
 import { toTitleCase } from "../../utils/strings";
 import Profile from "../../components/private/Profile";
-import ComingSoon from "../ComingSoon";
 import OrdersList from "../../components/private/OrdersList";
 
 const Account = () => {
@@ -15,10 +14,12 @@ const Account = () => {
 
   useEffect(() => {
     if (!searchParams.get("tab")) setSearchParams({ tab: "profile" });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (selectedKeys) setSearchParams({ tab: selectedKeys });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams.get("tab"), selectedKeys]);
 
   return (
@@ -47,9 +48,6 @@ const Account = () => {
           </Tab>
           <Tab key="orders" title="My Orders">
             <OrdersList />
-          </Tab>
-          <Tab key="reviews" title="My Reviews">
-            <ComingSoon />
           </Tab>
         </Tabs>
       </div>

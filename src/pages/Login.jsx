@@ -12,6 +12,7 @@ import { CustomButton } from "../components/CustomButton";
 import { useState } from "react";
 
 function Login() {
+  document.title = "Login | Grand Online Store";
   const navigate = useNavigate();
   const query = new URLSearchParams(window.location.search);
   const [rolling, setRolling] = useState(false);

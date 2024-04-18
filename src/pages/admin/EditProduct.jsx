@@ -110,11 +110,13 @@ function EditProduct() {
 
   useEffect(() => {
     clearErrors("images");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watchSrc]);
 
   const fetchProduct = async () => {
     try {
       const response = await axios.get(`${PRODUCTS_URL}/${_id}`);
+      document.title = `Admin | Edit Product - ${response.data.data.name} | Grand Online Store`;
       for (const key in response.data.data) {
         if (key === "images") {
           setImagesUrl(response.data.data[key]);
@@ -129,7 +131,7 @@ function EditProduct() {
       if (!error.response) {
         errorObj = { message: error.message, code: error.code };
       }
-      errorObj = { ...error.response.data, code: error.response.status };
+      errorObj = { ...error.response.data.error, code: error.response.status };
       setError(errorObj);
       notify("error", "Error while fetching product");
     }
@@ -137,7 +139,12 @@ function EditProduct() {
 
   useEffect(() => {
     fetchProduct();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [_id]);
+
+  useEffect(() => {
+    document.title = "Admin | Edit Product | Grand Online Store";
+  }, []);
 
   if (loading) {
     return (
@@ -148,6 +155,7 @@ function EditProduct() {
   }
 
   if (error) {
+    document.title = `${error.code} Error - ${error.message} | Grand Online Store`;
     return (
       <div className="text-center">
         <h2 className="text-2xl font-semibold text-red-500 mb-4">

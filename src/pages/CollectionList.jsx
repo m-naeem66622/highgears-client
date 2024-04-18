@@ -94,7 +94,16 @@ const CollectionList = () => {
     } else {
       fetchCollection();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
+
+  useEffect(() => {
+    document.title = `Explore Collection | ${collection.name} | Grand Online Store`;
+  }, [collection.name]);
+
+  useEffect(() => {
+    document.title = "Explore Collection | Grand Online Store";
+  }, []);
 
   if (loading) {
     return (
@@ -105,6 +114,7 @@ const CollectionList = () => {
   }
 
   if (error) {
+    document.title = `${error.code} Error - ${error.message} | Grand Online Store`;
     return (
       <div className="text-center">
         <h2 className="text-2xl font-semibold text-red-500 mb-4">
