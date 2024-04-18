@@ -68,8 +68,11 @@ const Header = () => {
     ],
     orders: [
       { name: "All Orders", path: "/admin/orders" },
-      { name: "Pending Orders", path: "/admin/orders/pending" },
-      { name: "Completed Orders", path: "/admin/orders/completed" },
+      { name: "Pending", path: "/admin/orders/status/pending" },
+      { name: "Processing", path: "/admin/orders/status/processing" },
+      { name: "Shipped", path: "/admin/orders/status/shipped" },
+      { name: "Completed", path: "/admin/orders/status/completed" },
+      { name: "Cancelled", path: "/admin/orders/status/cancelled" },
     ],
     collections: [
       { name: "All Collections", path: "/admin/collections" },

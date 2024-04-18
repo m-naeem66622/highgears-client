@@ -14,6 +14,8 @@ import {
   DropdownItem,
   Chip,
   Pagination,
+  Select,
+  SelectItem,
 } from "@nextui-org/react";
 import { ORDERS_URL } from "../../constants";
 import { SearchIcon } from "../../assets/SearchIcon";
@@ -24,12 +26,13 @@ import {
   formatPhoneNumber,
   toTitleCase,
 } from "../../utils/strings";
-import { orderColumns as columns } from "../../staticData";
+import { orderColumns as columns, orderStatus } from "../../staticData";
 import { CustomButton } from "../../components/CustomButton";
 import { Link } from "react-router-dom";
 import { notify } from "../../utils/notify";
 import axios from "axios";
 import propTypes from "prop-types";
+import { toast } from "react-toastify";
 
 const statusColorMap = {
   CANCELLED: "danger",
@@ -48,8 +51,9 @@ const INITIAL_VISIBLE_COLUMNS = [
   "actions",
 ];
 
-const OrderList = () => {
+const OrderList = ({ status }) => {
   document.title = "Admin | Manage Orders | Grand Online Store";
+  const [filterValue, setFilterValue] = React.useState();
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
   const [visibleColumns, setVisibleColumns] = React.useState(
     new Set(INITIAL_VISIBLE_COLUMNS)
@@ -78,7 +82,7 @@ const OrderList = () => {
 
     if (hasSearchFilter) {
       filteredOrders = filteredOrders.filter((order) =>
-        order._id.toLowerCase().includes(filterValue.toLowerCase())
+        order.orderStatus.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
 
@@ -110,9 +114,10 @@ const OrderList = () => {
       .join("&");
   };
 
-  const fetchOrders = async () => {
+  const fetchOrders = async (fromStart = false) => {
     try {
-      const query = { limit, page: page || 1 };
+      const query = { limit, page: page || fromStart || 1 };
+      if (status) query.orderStatus = status;
       const response = await axios.get(
         `${ORDERS_URL}?${formattedQuery(query)}`,
         {
@@ -132,11 +137,63 @@ const OrderList = () => {
       if (!error.response) {
         message = error.message;
       } else {
-        message = error.response.data;
+        message = error.response.data.error?.message;
+        if (error.response.status === 404) {
+          // reset the orders state
+          setOrders([]);
+          setTotalOrders(0);
+        }
       }
 
       notify("error", message);
     }
+  };
+
+  const updateStatus = async (orderId, status) => {
+    const resolveWithSomeData = new Promise((resolve, reject) => {
+      axios
+        .put(
+          `${ORDERS_URL}/${orderId}`,
+          { orderStatus: status },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+            },
+          }
+        )
+        .then((response) => {
+          setOrders((prev) =>
+            prev.map((order) =>
+              order._id === orderId ? { ...order, orderStatus: status } : order
+            )
+          );
+          resolve(response.data);
+        })
+        .catch((error) => {
+          console.log("Error while updating status:", error);
+          reject(error.response ? error.response.data : { error });
+        });
+    });
+
+    toast.promise(resolveWithSomeData, {
+      pending: {
+        render() {
+          return "Updating status...";
+        },
+        // icon: false,
+      },
+      success: {
+        render({ data }) {
+          return data.message;
+        },
+      },
+      error: {
+        render({ data }) {
+          // When the promise reject, data will contains the error
+          return data.error.message;
+        },
+      },
+    });
   };
 
   useEffect(() => {
@@ -144,20 +201,52 @@ const OrderList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, visibleColumns, limit]);
 
+  useEffect(() => {
+    setPage(1);
+    fetchOrders(1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status]);
+
   const renderCell = React.useCallback((order, columnKey) => {
     const cellValue = order[columnKey];
     switch (columnKey) {
       case "orderStatus":
-      case "paymentStatus":
         return (
-          <Chip
-            className="capitalize"
-            color={statusColorMap[cellValue]}
-            size="md"
-            variant="solid"
+          <Select
+            items={orderStatus}
+            name="orderStatus"
+            radius="none"
+            aria-label="Order Status"
+            placeholder={cellValue}
+            selectedKeys={[cellValue]}
+            onChange={(e) => updateStatus(order._id, e.target.value)}
+            renderValue={(items) => {
+              return items.map((item) => (
+                <Chip
+                  key={item.key}
+                  className="capitalize"
+                  color={statusColorMap[item.key]}
+                  size="md"
+                  variant="solid"
+                >
+                  {item.key}
+                </Chip>
+              ));
+            }}
           >
-            {cellValue}
-          </Chip>
+            {(item) => (
+              <SelectItem key={item.key} textValue={item.label}>
+                <Chip
+                  className="capitalize"
+                  color={statusColorMap[item.key]}
+                  size="md"
+                  variant="solid"
+                >
+                  {item.label}
+                </Chip>
+              </SelectItem>
+            )}
+          </Select>
         );
       case "placedAt":
         return new Date(cellValue).toLocaleDateString("en-GB", {
@@ -194,7 +283,7 @@ const OrderList = () => {
                 </CustomButton>
               </DropdownTrigger>
               <DropdownMenu aria-label="Actions for order">
-                <DropdownItem to={`/orders/${order._id}`} as={Link}>
+                <DropdownItem to={`/admin/orders/${order._id}`} as={Link}>
                   View
                 </DropdownItem>
                 <DropdownItem to={`/admin/orders/edit/${order._id}`} as={Link}>

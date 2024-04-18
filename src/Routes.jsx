@@ -45,7 +45,11 @@ export const adminRoutes = [
   { path: "/admin/collections", element: <CollectionList /> },
   { path: "/admin/collections/create", element: <AddCollection /> },
   { path: "/admin/collections/edit/:slug", element: <EditCollection /> },
-  { path: "/admin/users", element: <ComingSoon /> },
   { path: "/admin/orders", element: <OrderList /> },
-  { path: "/admin/reports", element: <ComingSoon /> },
+  { path: "/admin/orders/status/pending", element: <OrderList status="PENDING" /> },
+  { path: "/admin/orders/status/processing", element: <OrderList status="PROCESSING" /> },
+  { path: "/admin/orders/status/shipped", element: <OrderList status="SHIPPED" /> },
+  { path: "/admin/orders/status/completed", element: <OrderList status="COMPLETED" /> },
+  { path: "/admin/orders/status/cancelled", element: <OrderList status="CANCELLED" /> },
+  { path: "/admin/orders/:id", element: <OrderDetail /> },
 ];
