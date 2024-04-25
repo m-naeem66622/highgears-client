@@ -9,9 +9,10 @@ import { setCollections } from "../slices/collectionsSlice";
 import { Spinner } from "@nextui-org/react";
 import { notify } from "../utils/notify";
 import Carousel from "../components/ProductCarousel";
+import FeaturingCarousel from "../components/FeaturingCarousel";
 
 const Home = () => {
-  document.title = "Home | Grand Online Store - Spend less, Save more"
+  document.title = "Home | Grand Online Store - Spend less, Save more";
   const dispatch = useDispatch();
   const collections = useSelector((state) => state.collections);
   const [loading, setLoading] = useState(true);
@@ -69,6 +70,7 @@ const Home = () => {
 
   return (
     <>
+      <FeaturingCarousel />
       {collections.data
         .filter((col) => col.showOnHomepage)
         .map((collection) => (
