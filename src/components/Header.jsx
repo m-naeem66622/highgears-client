@@ -9,9 +9,22 @@ import {
   DropdownItem,
   Badge,
   Avatar,
+  DropdownSection,
+  Navbar,
+  NavbarMenuToggle,
+  NavbarMenu,
+  NavbarBrand,
+  Accordion,
+  AccordionItem,
 } from "@nextui-org/react";
 import { CustomButton } from "./CustomButton";
 import { logout } from "../slices/authSlice";
+import {
+  adminNestedRoutes,
+  adminRoutes,
+  publicNestedRoutes,
+  publicRoutes,
+} from "../staticData";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -20,65 +33,7 @@ const Header = () => {
   const pathname = location.pathname;
   const userInfo = useSelector((state) => state.auth.userInfo);
   const cart = useSelector((state) => state.cart);
-
-  const publicRoutes = [
-    { key: "women", name: "Women", path: "/women" },
-    { key: "men", name: "Men", path: "/men" },
-    { key: "kids", name: "Kids", path: "/kids" },
-  ];
-
-  const publicNestedRoutes = {
-    women: [
-      { name: "Sale", path: "/collections/all-women-deals" },
-      { name: "Eastern Wear", path: "/collections/women-eastern-wear" },
-      { name: "Western Wear", path: "/collections/women-western-wear" },
-      { name: "Active Wear", path: "/collections/women-active-wear" },
-      { name: "Footwear", path: "/collections/women-footwear" },
-      { name: "Sports Wear", path: "/collections/women-sports-wear" },
-      { name: "Accessories", path: "/collections/women-accessories" },
-      { name: "Brands", path: "/collections/brands" },
-    ],
-    men: [
-      { name: "Sale", path: "/collections/all-men-deals" },
-      { name: "Eastern Wear", path: "/collections/men-eastern-wear" },
-      { name: "Western Wear", path: "/collections/men-western-wear" },
-      { name: "Active Wear", path: "/collections/men-active-wear" },
-      { name: "Footwear", path: "/collections/men-footwear" },
-      { name: "Sports Wear", path: "/collections/men-sports-wear" },
-      { name: "Accessories", path: "/collections/men-accessories" },
-    ],
-    kids: [
-      { name: "Sale", path: "/collections/kidswear-deals" },
-      { name: "Girls", path: "/collections/kidswear-girls" },
-      { name: "Boys", path: "/collections/kidswear-boys" },
-      { name: "NewBorn Kids", path: "/collections/kidswear-toddler-baby" },
-    ],
-  };
-
-  const adminRoutes = [
-    { key: "products", name: "Products", path: "/admin/products" },
-    { key: "orders", name: "Orders", path: "/admin/orders" },
-    { key: "collections", name: "Collections", path: "/admin/collections" },
-  ];
-
-  const adminNestedRoutes = {
-    products: [
-      { name: "All Products", path: "/admin/products" },
-      { name: "Add Product", path: "/admin/products/create" },
-    ],
-    orders: [
-      { name: "All Orders", path: "/admin/orders" },
-      { name: "Pending", path: "/admin/orders/status/pending" },
-      { name: "Processing", path: "/admin/orders/status/processing" },
-      { name: "Shipped", path: "/admin/orders/status/shipped" },
-      { name: "Completed", path: "/admin/orders/status/completed" },
-      { name: "Cancelled", path: "/admin/orders/status/cancelled" },
-    ],
-    collections: [
-      { name: "All Collections", path: "/admin/collections" },
-      { name: "Add Collection", path: "/admin/collections/create" },
-    ],
-  };
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const [activeRoute, setActiveRoute] = useState(
     userInfo?.isAdmin
@@ -87,11 +42,7 @@ const Header = () => {
             adminNestedRoutes[r.key].some((r) => r.path === pathname)
           ) ||
           adminRoutes[0]
-      : publicRoutes.find((r) => r.path === pathname) ||
-          publicRoutes.find((r) =>
-            publicNestedRoutes[r.key].some((r) => r.path === pathname)
-          ) ||
-          publicRoutes[0]
+      : {}
   );
 
   const [routeFixed, setRouteFixed] = useState(false);
@@ -99,35 +50,19 @@ const Header = () => {
   const PublicHeader = (
     <>
       <div className="flex justify-between items-center w-full">
-        <div className="sm:flex gap-x-3 hidden">
-          {publicRoutes.map((route) => {
-            const isActive =
-              route.path === pathname ||
-              publicNestedRoutes[route.key].some((r) => r.path === pathname);
-            // : index === 0;
-            return (
-              <div key={route.key}>
-                <Link
-                  onMouseEnter={() => setActiveRoute(route)}
-                  key={route.path}
-                  className={`${
-                    isActive
-                      ? "bg-black text-white"
-                      : "bg-white text-[#888] hover:text-black"
-                  } py-2 px-4`}
-                  to={route.path}
-                >
-                  {route.name}
-                </Link>
-              </div>
-            );
-          })}
-        </div>
-
-        <Link to="/" className="flex bg-black p-2 text-lg poppins-bold gap-x-3">
-          <span className="bg-white text-black px-2">GRAND</span>{" "}
-          <span className="text-white">ONLINE STORE</span>
-        </Link>
+        <NavbarMenuToggle
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          className="sm:hidden mr-4"
+        />
+        <NavbarBrand>
+          <Link
+            to="/"
+            className="flex bg-black p-2 text-lg poppins-bold gap-x-3"
+          >
+            <span className="bg-white text-black px-2">GRAND</span>{" "}
+            <span className="text-white">ONLINE STORE</span>
+          </Link>
+        </NavbarBrand>
 
         <div className="flex items-center justify-center gap-x-3">
           <Dropdown radius="none">
@@ -265,40 +200,142 @@ const Header = () => {
         </div>
       </div>
       <div className="sm:flex justify-between w-full hidden">
-        <div
-          className="flex flex-wrap gap-x-2 text-base"
-          onMouseLeave={() => {
-            !routeFixed &&
-              setActiveRoute(
-                publicRoutes.find((r) => r.path === pathname) ||
-                  publicRoutes.find((r) =>
-                    publicNestedRoutes[r.key].some((r) => r.path === pathname)
-                  ) ||
-                  publicRoutes[0]
-              );
-            setRouteFixed(false);
-          }}
-        >
-          {publicNestedRoutes[activeRoute.key]?.map((route) => {
+        <div className="flex flex-wrap gap-x-2 text-base">
+          {publicRoutes.map((route) => {
             return (
-              <div
-                key={route.path}
-                className={`border-b-3 border-transparent text-[#888] hover:border-black hover:text-black my-2 py-1 px-2`}
-              >
-                <Link
-                  onClick={() => {
-                    setRouteFixed(true);
-                  }}
-                  className=""
-                  to={route.path}
-                >
-                  {route.name}
-                </Link>
-              </div>
+              <Dropdown radius="none" key={route.key}>
+                <DropdownTrigger>
+                  <button
+                    key={route.path}
+                    className={`border-b-3 border-transparent text-[#888] hover:border-black hover:text-black my-2 py-1 px-2`}
+                  >
+                    {route.name}
+                  </button>
+                </DropdownTrigger>
+                {route.parts ? (
+                  <DropdownMenu
+                    aria-label={route.name}
+                    classNames={{ list: "flex-row" }}
+                  >
+                    <DropdownSection>
+                      <DropdownItem
+                        isReadOnly
+                        className="data-[hover]:bg-transparent"
+                      >
+                        {route.name} Wear
+                      </DropdownItem>
+                      {publicNestedRoutes[route.key]["wear"]?.map((r) => (
+                        <DropdownItem
+                          key={r.path}
+                          textValue={r.name}
+                          className="rounded-none text-[#888] hover:text-black"
+                          as={Link}
+                          to={r.path}
+                        >
+                          {r.name}
+                        </DropdownItem>
+                      ))}
+                    </DropdownSection>
+                    <DropdownSection>
+                      <DropdownItem
+                        isReadOnly
+                        className="data-[hover]:bg-transparent"
+                      >
+                        {route.name} Accessories
+                      </DropdownItem>
+                      {publicNestedRoutes[route.key]["accessories"]?.map(
+                        (r) => (
+                          <DropdownItem
+                            key={r.path}
+                            textValue={r.name}
+                            className="rounded-none text-[#888] hover:text-black"
+                            as={Link}
+                            to={r.path}
+                          >
+                            {r.name}
+                          </DropdownItem>
+                        )
+                      )}
+                    </DropdownSection>
+                  </DropdownMenu>
+                ) : (
+                  <DropdownMenu>
+                    {publicNestedRoutes[route.key]?.map((r) => (
+                      <DropdownItem
+                        key={r.path}
+                        textValue={r.name}
+                        className="rounded-none text-[#888] hover:text-black"
+                        as={Link}
+                        to={r.path}
+                      >
+                        {r.name}
+                      </DropdownItem>
+                    ))}
+                  </DropdownMenu>
+                )}
+              </Dropdown>
             );
           })}
         </div>
       </div>
+      <NavbarMenu className="pb-32">
+        <Accordion variant="splitted">
+          {publicRoutes.map((route) => {
+            return (
+              <AccordionItem
+                key={route.key}
+                title={route.name}
+                className="text-[#888] hover:text-black"
+              >
+                {route.parts ? (
+                  <Accordion variant="splitted">
+                    <AccordionItem title={`${route.name} Wear`}>
+                      <div className="flex flex-col gap-y-2 text-medium">
+                        {publicNestedRoutes[route.key]["wear"].map((r) => (
+                          <Link
+                            key={r.path}
+                            to={r.path}
+                            onClick={(prev) => setIsMenuOpen(!prev)}
+                          >
+                            {r.name}
+                          </Link>
+                        ))}
+                      </div>
+                    </AccordionItem>
+                    <AccordionItem title={`${route.name} Accessories`}>
+                      <div className="flex flex-col gap-y-2 text-medium">
+                        {publicNestedRoutes[route.key]["accessories"].map(
+                          (r) => (
+                            <Link
+                              key={r.path}
+                              to={r.path}
+                              onClick={(prev) => setIsMenuOpen(!prev)}
+                            >
+                              {r.name}
+                            </Link>
+                          )
+                        )}
+                      </div>
+                    </AccordionItem>
+                  </Accordion>
+                ) : (
+                  <div className="flex flex-col gap-y-2 text-medium">
+                    {publicNestedRoutes[route.key].map((r) => (
+                      <Link
+                        key={r.path}
+                        to={r.path}
+                        onClick={(prev) => setIsMenuOpen(!prev)}
+                      >
+                        {r.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </AccordionItem>
+            );
+          })}
+        </Accordion>
+      </NavbarMenu>
     </>
   );
 
@@ -457,9 +494,19 @@ const Header = () => {
 
   return (
     <>
-      <header className="flex flex-col py-3 px-3 max-w-screen-xl mx-auto">
+      <Navbar
+        position="static"
+        isMenuOpen={isMenuOpen}
+        onMenuOpenChange={setIsMenuOpen}
+        classNames={{
+          wrapper: "max-w-screen-xl px-0 flex-col p-3",
+        }}
+        height={
+          userInfo?.isAdmin ? null : window.outerWidth >= 640 ? "134px" : "68px"
+        }
+      >
         {userInfo?.isAdmin === true ? AdminHeader : PublicHeader}
-      </header>
+      </Navbar>
     </>
   );
 };
