@@ -14,17 +14,17 @@ const Footer = () => {
           </div>
           <div className="mb-4 md:mb-0">
             <h2 className="text-lg font-semibold mb-2">Contact Us</h2>
-            <p>123 Fashion St, City, Country</p>
+            <p>Sialkot Road Daska 51010, Pakistan</p>
             <p>
               Email:
-              <a className="ml-1" href="mailto:info@example.com">
-                info@example.com
+              <a className="ml-1" href="mailto:info@highgears.pk">
+                info@highgears.pk
               </a>
             </p>
             <p>
               Phone:
-              <a href="tel:+1234567890" className="ml-1">
-                +123 456 7890
+              <a href="tel:+92526617859" className="ml-1">
+                +92-526-617859
               </a>
             </p>
           </div>
@@ -49,22 +49,33 @@ const Footer = () => {
             <h2 className="text-lg font-semibold mb-2">Follow Us</h2>
             <div className="flex space-x-4">
               <a
-                href="#"
+                href="https://www.facebook.com/qadeer8964"
+                target="_blank"
                 className="text-2xl text-gray-500 hover:text-blue-500 transition-colors duration-300"
               >
                 <i className="fa-brands fa-facebook"></i>
               </a>
               <a
-                href="#"
+                href="https://www.instagram.com/grandstoreonline"
+                target="_blank"
                 className="text-2xl text-gray-500 hover:text-red-500 transition-colors duration-300"
               >
                 <i className="fa-brands fa-instagram"></i>
               </a>
               <a
-                href="#"
+                href="https://twitter.com/"
+                target="_blank"
                 className="text-2xl text-gray-500 hover:text-black transition-colors duration-300"
               >
                 <i className="fa-brands fa-x-twitter"></i>
+              </a>
+              {/* // Linkedin */}
+              <a
+                href="https://www.linkedin.com"
+                target="_blank"
+                className="text-2xl text-gray-500 hover:text-blue-500 transition-colors duration-300"
+              >
+                <i className="fa-brands fa-linkedin"></i>
               </a>
             </div>
           </div>

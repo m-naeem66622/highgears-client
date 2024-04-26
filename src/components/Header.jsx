@@ -202,7 +202,14 @@ const Header = () => {
       <div className="sm:flex justify-between w-full hidden">
         <div className="flex flex-wrap gap-x-2 text-base">
           {publicRoutes.map((route) => {
-            return (
+            return route.isLink ? (
+              <Link
+                className="border-b-3 border-transparent text-[#888] hover:border-black hover:text-black my-2 py-1 px-2"
+                to={`/collections/${route.key}`}
+              >
+                {route.name}
+              </Link>
+            ) : (
               <Dropdown radius="none" key={route.key}>
                 <DropdownTrigger>
                   <button
@@ -280,7 +287,7 @@ const Header = () => {
       </div>
       <NavbarMenu className="pb-32">
         <Accordion variant="splitted">
-          {publicRoutes.map((route) => {
+          {publicRoutes.slice(0, publicRoutes.length - 1).map((route) => {
             return (
               <AccordionItem
                 key={route.key}
@@ -335,6 +342,17 @@ const Header = () => {
             );
           })}
         </Accordion>
+        <div className="px-2 group is-splitted flex flex-col gap-2 w-full">
+          <Link
+            className="group-[.is-splitted]:px-4 group-[.is-splitted]:bg-content1 group-[.is-splitted]:shadow-medium group-[.is-splitted]:rounded-medium text-[#888] hover:text-black"
+            to={`/collections/${publicRoutes[publicRoutes.length - 1].key}`}
+            onClick={(prev) => setIsMenuOpen(!prev)}
+          >
+            <span className="flex py-4 w-full h-full gap-3 items-center tap-highlight-transparent outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 transition-opacity text-foreground text-large">
+              {publicRoutes[publicRoutes.length - 1].name}
+            </span>
+          </Link>
+        </div>
       </NavbarMenu>
     </>
   );
@@ -502,7 +520,7 @@ const Header = () => {
           wrapper: "max-w-screen-xl px-0 flex-col p-3",
         }}
         height={
-          userInfo?.isAdmin ? null : window.outerWidth >= 640 ? "134px" : "68px"
+          userInfo?.isAdmin ? null : window.outerWidth >= 640 ? null : "68px"
         }
       >
         {userInfo?.isAdmin === true ? AdminHeader : PublicHeader}

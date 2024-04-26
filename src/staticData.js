@@ -7,6 +7,7 @@ export const publicRoutes = [
   { key: "shriner", name: "Shriner", parts: true },
   { key: "oes", name: "OES", parts: true },
   { key: "doi", name: "DOI", parts: true },
+  { key: "motorbike-suits", name: "Motorbike Suits", isLink: true },
 ];
 
 export const publicNestedRoutes = {
@@ -25,7 +26,6 @@ export const publicNestedRoutes = {
     { name: "Netball", path: "/collections/netball" },
     { name: "Rugby", path: "/collections/rugby" },
     { name: "Soccer Uniforms", path: "/collections/soccer-uniforms" },
-    { name: "Motorbike Suits", path: "/collections/motorbike-suits" },
   ],
   "casual-wear": [
     { name: "Casual Sweat Shirts", path: "/collections/casual-sweat-shirts" },
@@ -98,16 +98,16 @@ export const publicNestedRoutes = {
       },
       { name: "Masonic Aprons", path: "/collections/masonic-aprons" },
       {
-        name: "Masonic Sashes and Ribbons",
+        name: "Masonic Sashes & Ribbons",
         path: "/collections/masonic-sashes-ribbons",
       },
       {
-        name: "Masonic Jewels and Medals",
+        name: "Masonic Jewels & Medals",
         path: "/collections/masonic-jewels-medals",
       },
       { name: "Masonic Gloves", path: "/collections/masonic-gloves" },
       {
-        name: "Masonic Cuffs and Collars",
+        name: "Masonic Cuffs & Collars",
         path: "/collections/masonic-cuffs-collars",
       },
       { name: "Masonic Fez Case", path: "/collections/masonic-fez-case" },
@@ -141,16 +141,16 @@ export const publicNestedRoutes = {
       },
       { name: "Shriner Aprons", path: "/collections/shriner-aprons" },
       {
-        name: "Shriner Sashes and Ribbons",
+        name: "Shriner Sashes & Ribbons",
         path: "/collections/shriner-sashes-ribbons",
       },
       {
-        name: "Shriner Jewels and Medals",
+        name: "Shriner Jewels & Medals",
         path: "/collections/shriner-jewels-medals",
       },
       { name: "Shriner Gloves", path: "/collections/shriner-gloves" },
       {
-        name: "Shriner Cuffs and Collars",
+        name: "Shriner Cuffs & Collars",
         path: "/collections/shriner-cuffs-collars",
       },
       { name: "Shriner Fez Case", path: "/collections/shriner-fez-case" },
@@ -184,16 +184,16 @@ export const publicNestedRoutes = {
       },
       { name: "OES Aprons", path: "/collections/oes-aprons" },
       {
-        name: "OES Sashes and Ribbons",
+        name: "OES Sashes & Ribbons",
         path: "/collections/oes-sashes-ribbons",
       },
       {
-        name: "OES Jewels and Medals",
+        name: "OES Jewels & Medals",
         path: "/collections/oes-jewels-medals",
       },
       { name: "OES Gloves", path: "/collections/oes-gloves" },
       {
-        name: "OES Cuffs and Collars",
+        name: "OES Cuffs & Collars",
         path: "/collections/oes-cuffs-collars",
       },
       { name: "OES Fez Case", path: "/collections/oes-fez-case" },
@@ -227,16 +227,16 @@ export const publicNestedRoutes = {
       },
       { name: "DOI Aprons", path: "/collections/doi-aprons" },
       {
-        name: "DOI Sashes and Ribbons",
+        name: "DOI Sashes & Ribbons",
         path: "/collections/doi-sashes-ribbons",
       },
       {
-        name: "DOI Jewels and Medals",
+        name: "DOI Jewels & Medals",
         path: "/collections/doi-jewels-medals",
       },
       { name: "DOI Gloves", path: "/collections/doi-gloves" },
       {
-        name: "DOI Cuffs and Collars",
+        name: "DOI Cuffs & Collars",
         path: "/collections/doi-cuffs-collars",
       },
       { name: "DOI Fez Case", path: "/collections/doi-fez-case" },
