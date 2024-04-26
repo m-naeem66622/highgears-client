@@ -7,11 +7,13 @@ import { adminRoutes, privateRoutes, publicRoutes } from "./Routes";
 import AdminRoute from "./components/AdminRoute";
 import PrivateRoute from "./components/PrivateRoutes";
 import Footer from "./components/Footer";
+import ChatButton from "./components/ChatButton";
 
 function App() {
   document.title = "Grand Online Store | Spend less, Save more";
   return (
     <>
+      <ChatButton />
       <ToastContainer position="top-right" autoClose={2500} theme="light" />
       <Header />
       <div className="max-w-screen-xl mx-auto px-2 sm:px-4 xl:px-0">
